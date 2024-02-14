@@ -1,7 +1,9 @@
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:crystal_navigation_bar/crystal_navigation_bar.dart';
 import 'dart:ui';
+import 'package:flutter/rendering.dart';
+import 'package:thesisapp/color_schemes.g.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,87 +18,76 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int currentIndex = 0;
+  final iconList = <IconData>[
+    Icons.home,
+    Icons.brightness_4,
+    Icons.brightness_6,
+    Icons.brightness_7,
+  ];
+
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+
     return MaterialApp(
-        home: Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(onPressed: () {}, shape: CircleBorder(),),
-      extendBody: true,
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: Image.network(
-          "https://images.pexels.com/photos/1671325/pexels-photo-1671325.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          fit: BoxFit.fitHeight,
-        ),
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: lightColorScheme,
       ),
-      bottomNavigationBar: BottomAppBar(
-        notchMargin: 20.0,
-        shape: CircularNotchedRectangle(),
-        color: Colors.transparent,
-        padding: EdgeInsets.zero,
-        elevation: 0,
-        height: 105,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        colorScheme: darkColorScheme,
+      ),
+      themeMode: ThemeMode.dark,
+      home: Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          shape: CircleBorder(),
+          child: Icon(
+            CupertinoIcons.chevron_up,
+            size: 32.0,
+          ),
+        ),
+        extendBody: true,
+        body: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          // child: Image.network(
+          //   "https://images.pexels.com/photos/1671325/pexels-photo-1671325.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          //   fit: BoxFit.fitHeight,
+          // ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.only(bottom: 10.0),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(32),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
-              child: Container(
-                padding: EdgeInsets.only(bottom: 5, top: 10),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(color: Colors.white24),
-                  color: Colors.black.withOpacity(0.1),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Body(
-                    items: [CrystalNavigationBarItem(
-                      icon: Icons.home,
-                      unselectedIcon: CupertinoIcons.home,
-                      selectedColor: Colors.white,
-                    ),CrystalNavigationBarItem(
-                      icon: Icons.home,
-                      unselectedIcon: CupertinoIcons.home,
-                      selectedColor: Colors.white,
-                    ),CrystalNavigationBarItem(
-                      icon: Icons.home,
-                      unselectedIcon: CupertinoIcons.home,
-                      selectedColor: Colors.white,
-                    ),CrystalNavigationBarItem(
-                      icon: Icons.home,
-                      unselectedIcon: CupertinoIcons.home,
-                      selectedColor: Colors.white,
-                    ),],
-                    currentIndex: currentIndex,
-                    curve: Curves.easeOutQuint,
-                    duration: Duration(milliseconds: 500),
-                    onTap: (value) {
-                      setState(() {
-                        currentIndex = value;
-                      });
-                    },
-                    itemPadding:
-                        EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                    indicatorColor: Colors.green,
-                    selectedItemColor: Colors.white, theme: theme, unselectedItemColor: Colors.white70,
-                  ),
-                ),
+              child: AnimatedBottomNavigationBar(
+                icons: iconList,
+                activeIndex: currentIndex,
+                onTap: (value) {
+                  setState(() {
+                    currentIndex = value;
+                  });
+                },
+                gapLocation: GapLocation.center,
+                notchSmoothness: NotchSmoothness.softEdge,
+                backgroundColor: darkColorScheme.surfaceVariant,
+                activeColor: darkColorScheme.tertiary,
+                inactiveColor: darkColorScheme.onSurfaceVariant,
+                elevation: 4.0,
+                splashColor: darkColorScheme.tertiary,
               ),
             ),
           ),
         ),
       ),
-    ));
+    );
   }
 }
 
-// CrystalNavigationBar(
+//CrystalNavigationBar()
 // currentIndex: _currentIndex,
 // indicatorColor: Colors.green,
 // unselectedItemColor: Colors.white70,
