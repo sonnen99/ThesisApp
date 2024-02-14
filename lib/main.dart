@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:flutter/rendering.dart';
 import 'package:thesisapp/color_schemes.g.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,24 +20,36 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   int currentIndex = 0;
   final iconList = <IconData>[
-    Icons.home,
-    Icons.brightness_4,
-    Icons.brightness_6,
-    Icons.brightness_7,
+    Symbols.home_rounded,
+    Symbols.groups_rounded,
+    Symbols.settings_rounded,
+    Symbols.account_circle_rounded,
   ];
-
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: lightColorScheme,
+        iconTheme: const IconThemeData(
+          fill: 0,
+          weight: 200,
+          opticalSize: 48,
+          grade: 200,
+          size: 40,
+        ),
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
         colorScheme: darkColorScheme,
+        iconTheme: const IconThemeData(
+          fill: 0,
+          weight: 200,
+          opticalSize: 48,
+          grade: 2000,
+          size: 40,
+        ),
       ),
       themeMode: ThemeMode.dark,
       home: Scaffold(
@@ -45,17 +58,17 @@ class _MyAppState extends State<MyApp> {
           onPressed: () {},
           shape: CircleBorder(),
           child: Icon(
-            CupertinoIcons.chevron_up,
-            size: 32.0,
+            Symbols.keyboard_arrow_up_rounded,
+            size: 48.0,
           ),
         ),
         extendBody: true,
         body: SizedBox(
           height: MediaQuery.of(context).size.height,
-          // child: Image.network(
-          //   "https://images.pexels.com/photos/1671325/pexels-photo-1671325.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          //   fit: BoxFit.fitHeight,
-          // ),
+          child: Image.network(
+            "https://images.pexels.com/photos/1671325/pexels-photo-1671325.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+            fit: BoxFit.fitHeight,
+          ),
         ),
         bottomNavigationBar: Padding(
           padding: EdgeInsets.only(bottom: 10.0),
@@ -73,7 +86,8 @@ class _MyAppState extends State<MyApp> {
                 },
                 gapLocation: GapLocation.center,
                 notchSmoothness: NotchSmoothness.softEdge,
-                backgroundColor: darkColorScheme.surfaceVariant,
+                backgroundColor:
+                    darkColorScheme.surfaceVariant.withOpacity(0.2),
                 activeColor: darkColorScheme.tertiary,
                 inactiveColor: darkColorScheme.onSurfaceVariant,
                 elevation: 4.0,
