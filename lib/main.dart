@@ -1,10 +1,13 @@
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui';
-import 'package:flutter/rendering.dart';
-import 'package:thesisapp/color_schemes.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:thesisapp/screens/performance_screen.dart';
+import 'package:thesisapp/screens/profile_screen.dart';
+import 'package:thesisapp/screens/settings_screen.dart';
+import 'package:thesisapp/screens/start_screen.dart';
+import 'package:thesisapp/screens/teams_screen.dart';
+import 'package:thesisapp/utilities/theme_data.dart';
+import 'screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,133 +21,22 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  int currentIndex = 0;
-  final iconList = <IconData>[
-    Symbols.home_rounded,
-    Symbols.groups_rounded,
-    Symbols.settings_rounded,
-    Symbols.account_circle_rounded,
-  ];
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: lightColorScheme,
-        iconTheme: const IconThemeData(
-          fill: 0,
-          weight: 200,
-          opticalSize: 48,
-          grade: 200,
-          size: 40,
-        ),
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        colorScheme: darkColorScheme,
-        iconTheme: const IconThemeData(
-          fill: 0,
-          weight: 200,
-          opticalSize: 48,
-          grade: 2000,
-          size: 40,
-        ),
-      ),
+      theme: MyTheme.lightThemeData(context),
+      darkTheme: MyTheme.darkThemeData(),
       themeMode: ThemeMode.dark,
-      home: Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          shape: CircleBorder(),
-          child: Icon(
-            Symbols.keyboard_arrow_up_rounded,
-            size: 48.0,
-          ),
-        ),
-        extendBody: true,
-        body: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Image.network(
-            "https://images.pexels.com/photos/1671325/pexels-photo-1671325.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-            fit: BoxFit.fitHeight,
-          ),
-        ),
-        bottomNavigationBar: Padding(
-          padding: EdgeInsets.only(bottom: 10.0),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(32),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
-              child: AnimatedBottomNavigationBar(
-                icons: iconList,
-                activeIndex: currentIndex,
-                onTap: (value) {
-                  setState(() {
-                    currentIndex = value;
-                  });
-                },
-                gapLocation: GapLocation.center,
-                notchSmoothness: NotchSmoothness.softEdge,
-                backgroundColor:
-                    darkColorScheme.surfaceVariant.withOpacity(0.2),
-                activeColor: darkColorScheme.tertiary,
-                inactiveColor: darkColorScheme.onSurfaceVariant,
-                elevation: 4.0,
-                splashColor: darkColorScheme.tertiary,
-              ),
-            ),
-          ),
-        ),
-      ),
+      initialRoute: StartScreen.id,
+      routes: {
+        StartScreen.id: (context) => StartScreen(),
+        HomeScreen.id: (context) => HomeScreen(),
+        PerformanceScreen.id: (context) => PerformanceScreen(),
+        TeamsScreen.id: (context) => TeamsScreen(),
+        SettingsScreen.id: (context) => SettingsScreen(),
+        ProfileScreen.id: (context) => ProfileScreen(),
+      },
     );
   }
 }
-
-//CrystalNavigationBar()
-// currentIndex: _currentIndex,
-// indicatorColor: Colors.green,
-// unselectedItemColor: Colors.white70,
-// backgroundColor: Colors.black.withOpacity(0.1),
-// outlineBorderColor: Colors.white.withOpacity(0.1),
-// onTap: (value) {
-// setState(() {
-// _currentIndex = value;
-// });
-// },
-// items: [
-// /// Home
-// CrystalNavigationBarItem(
-// icon: Icons.home,
-// unselectedIcon: CupertinoIcons.home,
-// selectedColor: Colors.white,
-// ),
-//
-// /// Favourite
-// CrystalNavigationBarItem(
-// icon: CupertinoIcons.heart_fill,
-// unselectedIcon: CupertinoIcons.heart,
-// selectedColor: Colors.red,
-// ),
-//
-// /// Add
-// CrystalNavigationBarItem(
-// icon: CupertinoIcons.plus_app_fill,
-// unselectedIcon: CupertinoIcons.plus_app,
-// selectedColor: Colors.white,
-// ),
-//
-// /// Search
-// CrystalNavigationBarItem(
-// icon: CupertinoIcons.search_circle_fill,
-// unselectedIcon: CupertinoIcons.search_circle,
-// selectedColor: Colors.white),
-//
-// /// Profile
-// CrystalNavigationBarItem(
-// icon: Icons.supervised_user_circle,
-// unselectedIcon: Icons.supervised_user_circle_outlined,
-// selectedColor: Colors.white,
-// ),
-// ],
-// ),
