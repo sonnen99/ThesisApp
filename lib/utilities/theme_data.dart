@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'color_schemes.g.dart';
 
 class MyTheme {
-
   static ThemeData lightThemeData(BuildContext context) {
     return ThemeData(
       useMaterial3: true,

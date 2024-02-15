@@ -53,64 +53,71 @@ class _StartScreenState extends State<StartScreen> {
         page = HomeScreen();
     }
     return LayoutBuilder(builder: (context, constraints) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            screenList[currentIndex],
-            style: TextStyle(fontWeight: FontWeight.w100),
+      return SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              screenList[currentIndex],
+              style: TextStyle(fontWeight: FontWeight.w100),
+            ),
           ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          heroTag: 'performance',
-          onPressed: () {
-            Navigator.pushNamed(context, PerformanceScreen.id);
-          },
-          shape: CircleBorder(),
-          child: Icon(
-            Symbols.keyboard_arrow_up_rounded,
-            size: 48.0,
-          ),
-        ),
-        extendBody: true,
-        body: PageView(
-            controller: _pageController,
-            onPageChanged: (index) {
-              setState(() {
-                currentIndex = index;
-              });
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            heroTag: 'performance',
+            onPressed: () {
+              Navigator.pushNamed(context, PerformanceScreen.id);
             },
-            children: <Widget>[
-              HomeScreen(),
-              TeamsScreen(),
-              SettingsScreen(),
-              ProfileScreen(),
-            ]),
-        bottomNavigationBar: Padding(
-          padding: EdgeInsets.only(bottom: 10.0),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(32),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
-              child: AnimatedBottomNavigationBar(
-                icons: iconList,
-                activeIndex: currentIndex,
-                onTap: (value) {
-                  setState(() {
-                    currentIndex = value;
-                    _pageController.animateToPage(currentIndex,
-                        duration: Duration(milliseconds: 800),
-                        curve: Curves.fastOutSlowIn);
-                  });
-                },
-                gapLocation: GapLocation.center,
-                notchSmoothness: NotchSmoothness.softEdge,
-                backgroundColor:
-                    darkColorScheme.surfaceVariant.withOpacity(0.2),
-                activeColor: darkColorScheme.tertiary,
-                inactiveColor: darkColorScheme.onSurfaceVariant,
-                elevation: 4.0,
-                splashColor: darkColorScheme.tertiary,
+            shape: CircleBorder(),
+            child: Icon(
+              Symbols.keyboard_arrow_up_rounded,
+              size: 48.0,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
+          extendBody: true,
+          body: PageView(
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  currentIndex = index;
+                });
+              },
+              children: <Widget>[
+                HomeScreen(),
+                TeamsScreen(),
+                SettingsScreen(),
+                ProfileScreen(),
+              ]),
+          bottomNavigationBar: Padding(
+            padding: EdgeInsets.only(bottom: 10.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(32),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
+                child: AnimatedBottomNavigationBar(
+                  icons: iconList,
+                  activeIndex: currentIndex,
+                  onTap: (value) {
+                    setState(() {
+                      currentIndex = value;
+                      _pageController.animateToPage(currentIndex,
+                          duration: Duration(milliseconds: 800),
+                          curve: Curves.fastOutSlowIn);
+                    });
+                  },
+                  gapLocation: GapLocation.center,
+                  notchSmoothness: NotchSmoothness.softEdge,
+                  backgroundColor: Theme.of(context)
+                      .colorScheme
+                      .surfaceVariant
+                      .withOpacity(0.2),
+                  activeColor: Theme.of(context).colorScheme.tertiary,
+                  inactiveColor: Theme.of(context).colorScheme.onSurfaceVariant,
+                  elevation: 4.0,
+                  splashColor: Theme.of(context).colorScheme.tertiary,
+                ),
               ),
             ),
           ),

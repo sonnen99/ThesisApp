@@ -1,23 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:thesisapp/utilities/color_schemes.g.dart';
+import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 class PerformanceScreen extends StatelessWidget {
   static const String id = 'performance_screen';
 
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: 'performance',
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: Container(
-          color: lightColorScheme.primary,
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 16.0,
+              ),
+              child: Hero(
+                tag: 'performance',
+                child: MaterialButton(
+                  shape: CircleBorder(),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Symbols.keyboard_arrow_left_rounded,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    size: 48.0,
+                  ),
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            )
+          ],
         ),
-        // child: Image.network(
-        //   "https://images.pexels.com/photos/1671325/pexels-photo-1671325.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-        //   fit: BoxFit.fitHeight,
-        // ),
       ),
     );
   }
 }
+//
+// GestureDetector(
+// child: CircleAvatar(
+// child: Icon(
+// Symbols.keyboard_arrow_left_rounded,size: 64.0,
+// ),
+// radius: 32.0,
+// ),
+// onTap: () {
+// Navigator.pop(context);
+// },
+// )

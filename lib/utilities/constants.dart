@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-
 final iconList = <IconData>[
   Symbols.home_rounded,
   Symbols.groups_rounded,
