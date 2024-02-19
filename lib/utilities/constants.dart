@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
@@ -13,4 +14,12 @@ final screenList = <String>[
   'Teams',
   'Settings',
   'Profile',
+];
+
+final sampleData = <RadarEntry> [
+  RadarEntry(value: 5),
+  RadarEntry(value: 10),
+  RadarEntry(value: 8),
+  RadarEntry(value: 19),
+  RadarEntry(value: 3),
 ];
