@@ -36,7 +36,7 @@ const lightColorScheme = ColorScheme(
 
 const darkColorScheme = ColorScheme(
   brightness: Brightness.dark,
-  primary: Color(0xFFB1C5FF),
+  primary: Color (0xFFB1C5FF),
   onPrimary: Color(0xFF002C72),
   primaryContainer: Color(0xFF0040A0),
   onPrimaryContainer: Color(0xFFDAE2FF),
@@ -67,3 +67,8 @@ const darkColorScheme = ColorScheme(
   outlineVariant: Color(0xFF44464F),
   scrim: Color(0xFF000000),
 );
+
+const Color red = Color(0xFFB42533);
+const Color yellow = Color(0xFFD0CB54);
+const Color green = Color(0xFF006C4A);
+
