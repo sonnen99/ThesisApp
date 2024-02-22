@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_echarts/flutter_echarts.dart';
 import 'package:thesisapp/utilities/color_schemes.g.dart';
@@ -20,7 +18,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
 
   getData1() async {
     //TODO: Fetch data from firestore
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
 
     const dataObj = [
       214 / 220 * 100,
@@ -40,21 +38,20 @@ class _TeamsScreenState extends State<TeamsScreen> {
       3.7 / 5.5 * 100,
     ];
 
-    this.setState(() {
-      this._data1 = dataObj;
-      this._data2 = dataObj2;
+    setState(() {
+      _data1 = dataObj;
+      _data2 = dataObj2;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    this.getData1();
+    getData1();
   }
 
   @override
   Widget build(BuildContext context) {
-    var gridColor = Theme.of(context).colorScheme.primary;
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -78,26 +75,26 @@ class _TeamsScreenState extends State<TeamsScreen> {
                 data: ['Jan 24', 'Mar 24',],
                 itemGap: 10,
                 textStyle: {
-                  color: ${jsonEncode('#' + Theme.of(context).colorScheme.onSurface.value.toRadixString(16).substring(2))},
+                  color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurface.value.toRadixString(16).substring(2)}')},
                   fontSize: 16,
                   fontWeight: 300,
                 },
                 itemStyle: {
-                  borderColor: ${jsonEncode('#' + Theme.of(context).colorScheme.onTertiary.value.toRadixString(16).substring(2))},
+                  borderColor: ${jsonEncode('#${Theme.of(context).colorScheme.onTertiary.value.toRadixString(16).substring(2)}')},
                   borderWidth: 1,
-                  shadowColor: ${jsonEncode('#' + Theme.of(context).colorScheme.onSurface.value.toRadixString(16).substring(2))},
+                  shadowColor: ${jsonEncode('#${Theme.of(context).colorScheme.onSurface.value.toRadixString(16).substring(2)}')},
                   shadowBlur: 4,
                 },
                 selectedMode: 'multiple',
-                inactiveColor: ${jsonEncode('#' + Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2))},
+                inactiveColor: ${jsonEncode('#${Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2)}')},
                 selector: ['all', 'inverse'],
                 selectorLabel: {
-                  color: ${jsonEncode('#' + Theme.of(context).colorScheme.onPrimary.value.toRadixString(16).substring(2))},
+                  color: ${jsonEncode('#${Theme.of(context).colorScheme.onPrimary.value.toRadixString(16).substring(2)}')},
                   fontWeight: 300,
                   fontSize: 14,
                   lineHeight: 16,
-                  backgroundColor: ${jsonEncode('#' + Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2))},
-                  borderColor: ${jsonEncode('#' + Theme.of(context).colorScheme.onPrimary.value.toRadixString(16).substring(2))},
+                  backgroundColor: ${jsonEncode('#${Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2)}')},
+                  borderColor: ${jsonEncode('#${Theme.of(context).colorScheme.onPrimary.value.toRadixString(16).substring(2)}')},
                   borderWidth: 1, 
                   padding: [4,8,4,8],
                 },
@@ -108,11 +105,11 @@ class _TeamsScreenState extends State<TeamsScreen> {
               tooltip: {
                 position: 'bottom',
                 valueFormatter: (value) => value.toFixed(1),
-                backgroundColor: ${jsonEncode('#' + Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2))},
+                backgroundColor: ${jsonEncode('#${Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2)}')},
                 textStyle: {
                   fontWeight: 300,
                   fontSize: 16,
-                  color: ${jsonEncode('#' + Theme.of(context).colorScheme.onSurfaceVariant.value.toRadixString(16).substring(2))},
+                  color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurfaceVariant.value.toRadixString(16).substring(2)}')},
                 },
                 order: 'valueAsc',
               },
@@ -131,7 +128,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                 shape: 'polygon',
                 splitNumber: 3,
                 axisName: {
-                  color: ${jsonEncode('#' + Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2))},
+                  color: ${jsonEncode('#${Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2)}')},
                   fontWeight: 300,
                   fontSize: 12,
                   width: 20,
@@ -153,7 +150,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                   showMinLabel: false,
                   showMaxLabel: false,
                   hideOverlap: true,
-                  color: ${jsonEncode('#' + Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2))},
+                  color: ${jsonEncode('#${Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2)}')},
                   align: 'left',
                   verticalAlign: 'bottom',
                   padding: [0,0,0,4],
@@ -175,9 +172,9 @@ class _TeamsScreenState extends State<TeamsScreen> {
                   show: true,
                   areaStyle: {
                     color: [
-                      ${jsonEncode('#' + red.value.toRadixString(16).substring(2))},
-                      ${jsonEncode('#' + yellow.value.toRadixString(16).substring(2))},
-                      ${jsonEncode('#' + green.value.toRadixString(16).substring(2))},
+                      ${getColor(context, 'red')},
+                      ${getColor(context, 'yellow')},
+                      ${getColor(context, 'green')},
                     ],
                     opacity: 0.2,
                   },
@@ -185,7 +182,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                 axisLine: {
                   symbol: 'none',
                   lineStyle: {
-                    color: ${jsonEncode('#' + Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2))},
+                    color: ${jsonEncode('#${Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2)}')},
                     width: 0.5,
                     cap: 'round',
                   }
@@ -202,7 +199,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                   data: [${jsonEncode(_data1)}],
                   symbol: 'none',
                   itemStyle: {
-                    color: ${jsonEncode('#' + Theme.of(context).colorScheme.tertiary.value.toRadixString(16).substring(2))},
+                    color: ${jsonEncode('#${Theme.of(context).colorScheme.tertiary.value.toRadixString(16).substring(2)}')},
                   },
                   areaStyle: {
                     opacity: 0.25
@@ -221,11 +218,11 @@ class _TeamsScreenState extends State<TeamsScreen> {
                   },
                   blur: {
                     lineStyle: {
-                      color: ${jsonEncode('#' + Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2))},
+                      color: ${jsonEncode('#${Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2)}')},
                       opacity: 0.5,
                     },
                     areaStyle: {
-                      color: ${jsonEncode('#' + Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2))},
+                      color: ${jsonEncode('#${Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2)}')},
                       opacity: 0.2,
                     },
                   },
@@ -240,7 +237,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                   data: [${jsonEncode(_data2)}],
                   symbol: 'none',
                   itemStyle: {
-                    color: ${jsonEncode('#' + Theme.of(context).colorScheme.tertiary.value.toRadixString(16).substring(2))},
+                    color: ${jsonEncode('#${Theme.of(context).colorScheme.tertiary.value.toRadixString(16).substring(2)}')},
                   },
                   areaStyle: {
                     opacity: 0.25
@@ -259,11 +256,11 @@ class _TeamsScreenState extends State<TeamsScreen> {
                   },
                   blur: {
                     lineStyle: {
-                      color: ${jsonEncode('#' + Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2))},
+                      color: ${jsonEncode('#${Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2)}')},
                       opacity: 0.5,
                     },
                     areaStyle: {
-                      color: ${jsonEncode('#' + Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2))},
+                      color: ${jsonEncode('#${Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2)}')},
                       opacity: 0.2,
                     },
                   },

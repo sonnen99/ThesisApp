@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_echarts/flutter_echarts.dart';
+import 'package:thesisapp/utilities/color_schemes.g.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const String id = 'profile_screen';
@@ -11,7 +11,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
   List<Map<String, Object>> _data1 = [
     {
       'name': 'Please wait',
@@ -26,7 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   getData1() async {
     //TODO: Fetch data from firestore
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
 
     const dataObj = [
       {
@@ -45,32 +44,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
         'Agility': 5.1,
         'Explosiveness': 1.4,
         'Speed': 3.5,
-        'Endurance': 5.9,
+        'Endurance': 6.4,
       },
     ];
 
-    this.setState(() {
-      this._data1 = dataObj;
+    setState(() {
+      _data1 = dataObj;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    this.getData1();
+    getData1();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 10.0),
-      child: Echarts(
-          option: '''{
-            color: ['#395aae', '#80d996', '#ffb95f', '#ffb1c1', '#9acbff', '#026d36'],
-            // baseOption: {
-            //   timeline: {},
-            // },
-            // options: [],
+      padding: EdgeInsets.only(top: 8.0),
+      child: Echarts(option: '''{
+            color: [${getColor(context, 'blue')}, ${getColor(context, 'green')}, ${getColor(context, 'brown')}, ${getColor(context, 'red')}, ${getColor(context, 'turquoise')}, ${getColor(context, 'yellow')}],
             dataset: {
               source: ${jsonEncode(_data1)},
             },
@@ -91,11 +85,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               pageButtonItemGap: 6,
               pageButtonGap: 10,
               pageButtonPosition: 'end',
-              pageIconColor: ${jsonEncode('#' + Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2))},
-              pageIconInactiveColor: ${jsonEncode('#' + Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2))},
+              pageIconColor: ${jsonEncode('#${Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2)}')},
+              pageIconInactiveColor: ${jsonEncode('#${Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2)}')},
               pageIconSize: 18,
               pageTextStyle: {
-                color: ${jsonEncode('#' + Theme.of(context).colorScheme.onSurfaceVariant.value.toRadixString(16).substring(2))},
+                color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurfaceVariant.value.toRadixString(16).substring(2)}')},
                 fontWeight: 200,
               },
               animationDurationUpdate: 500,
@@ -105,19 +99,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
               itemWidth: 16,
               itemHeight: 16,
               textStyle: {
-                color: ${jsonEncode('#' + Theme.of(context).colorScheme.onSurface.value.toRadixString(16).substring(2))},
+                color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurface.value.toRadixString(16).substring(2)}')},
                 fontWeight: 200,
                 fontSize: 14,
               },
-              
+              selectedMode: 'multiple',
+              inactiveColor: ${jsonEncode('#${Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2)}')},
+              icon: 'roundRect',
             },
             grid: {
               left: '5%',
               right: '7%',
-              top: '4%',
+              top: '5.1%',
               height: '78%',
-              containLabel: true,
-              z: 22,
+              containLabel: true,          
             },
             toolbox: {
               show: true,
@@ -135,12 +130,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             },
             tooltip: {
               trigger: 'item',
-              position: 'top',
-              backgroundColor: ${jsonEncode('#' + Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2))},
+              position: 'bottom',
+              backgroundColor: ${jsonEncode('#${Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2)}')},
               textStyle: {
                 fontWeight: 300,
                 fontSize: 16,
-                color: ${jsonEncode('#' + Theme.of(context).colorScheme.onSurfaceVariant.value.toRadixString(16).substring(2))},
+                color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurfaceVariant.value.toRadixString(16).substring(2)}')},
               },
             },
             animationEasing: 'elasticOut',
@@ -150,12 +145,61 @@ class _ProfileScreenState extends State<ProfileScreen> {
             xAxis: [
               {
                 type: 'category',
-                axisTick: {show: false},
+                position: 'bottom',
+                name: 'Date',
+                nameLocation: 'middle',
+                inverse: false,
+                boundaryGap: true,
+                axisLine: {
+                  show: true,
+                  lineStyle: {
+                    cap: 'round',
+                    join: 'round',
+                  },
+                },
+                axisTick: {
+                  show: true,
+                  alignWithLabel: false,
+                  inside: false,
+                  length: 8,
+                  lineStyle: {
+                    cap: 'round',
+                    join: 'round',
+                  },
+                },
+                axisLabel: {
+                  hideOverlap: true,
+                },
+                splitLine: {
+                  show: false,
+                },
               }
             ],
             yAxis: [
               {
                 type: 'value',
+                position: 'left',
+                scale: false,
+                minInterval: 0.5,
+                axisLine: {
+                  show: false,
+                  lineStyle: {
+                    cap: 'round',
+                    join: 'round',
+                  },
+                },
+                axisTick: {
+                  show: false,
+                },
+                splitLine: {
+                  show: true,
+                  lineStyle: {
+                    color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurfaceVariant.value.toRadixString(16).substring(2)}')},
+                    width: 0.7,
+                    cap: 'round',
+                    join: 'round',
+                  },
+                },
               }
             ],
             series: [
@@ -166,12 +210,62 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 label: {
                   show: true,
                   position: 'insideBottom',
-                  distance: 10,
+                  distance: 8,
                   align: 'left',
                   verticalAlign: 'middle',
                   rotate: 90,
                   formatter: '{@Jump height}  {name|{a}}',
                   fontSize: 16,
+                  fontWeight: 300,
+                  rich: {
+                    name: {},
+                  }
+                },
+                itemStyle: {
+                  borderRadius: [8,8,0,0],
+                },
+                emphasis: {
+                  focus: 'series',
+                },
+                blur: {
+                  label: {
+                    show: false,
+                  },
+                },
+                clip: true,
+                animationDelay: function (idx) {
+                  return idx * 10 + 100;
+                },
+                markPoint: {
+                  symbol: 'pin',
+                  symbolSize: 60,
+                  label: {
+                    show: true,
+                    position: 'inside',
+                    offset: [0,-2],
+                    fontWeight: 300,
+                    fontSize: 13,
+                  },
+                  data: [
+                    {type: 'max', name: 'Best',},
+                  ],
+                  
+                },
+              },
+              {
+                name: 'Jump distance',
+                type: 'bar',
+                barGap: 0,
+                label: {
+                  show: true,
+                  position: 'insideBottom',
+                  distance: 8,
+                  align: 'left',
+                  verticalAlign: 'middle',
+                  rotate: 90,
+                  formatter: '{@Jump distance}  {name|{a}}',
+                  fontSize: 16,
+                  fontWeight: 300,
                   rich: {
                     name: {},
                   }
@@ -180,149 +274,215 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   borderRadius: [8,8,0,0],
                 },
                 emphasis: {focus: 'series'},
+                blur: {
+                  label: {
+                    show: false,
+                  },
+                },
+                clip: true,
                 animationDelay: function (idx) {
                   return idx * 10 + 100;
                 },
                 markPoint: {
+                  symbol: 'pin',
+                  symbolSize: 60,
+                  label: {
+                    show: true,
+                    position: 'inside',
+                    offset: [0,-2],
+                    fontWeight: 300,
+                    fontSize: 13,
+                  },
                   data: [
-                    {type: 'max', name: 'Max',},
-                  ],
-                },
-              },
-              {
-                name: 'Jump distance',
-                type: 'bar',
-                label: {
-                  show: true,
-                  position: 'insideBottom',
-                  distance: 10,
-                  align: 'left',
-                  verticalAlign: 'middle',
-                  rotate: 90,
-                  formatter: '{@Jump distance}  {name|{a}}',
-                  fontSize: 16,
-                  rich: {
-                    name: {},
-                  }
-                },
-                emphasis: {focus: 'series'},
-                animationDelay: function (idx) {
-                  return idx * 10 + 100;
-                },
-                markPoint: {
-                  data: [
-                    {type: 'max', name: 'Max',},
+                    {type: 'max', name: 'Best',},
                   ],
                 },
               },
               {
                 name: 'Agility',
                 type: 'bar',
+                barGap: 0,
                 label: {
                   show: true,
                   position: 'insideBottom',
-                  distance: 10,
+                  distance: 8,
                   align: 'left',
                   verticalAlign: 'middle',
                   rotate: 90,
                   formatter: '{@Agility}  {name|{a}}',
                   fontSize: 16,
+                  fontWeight: 300,
                   rich: {
                     name: {},
                   }
                 },
+                itemStyle: {
+                  borderRadius: [8,8,0,0],
+                },
                 emphasis: {focus: 'series'},
+                blur: {
+                  label: {
+                    show: false,
+                  },
+                },
+                clip: true,
                 animationDelay: function (idx) {
                   return idx * 10 + 100;
                 },
                 markPoint: {
+                  symbol: 'pin',
+                  symbolSize: 60,
+                  label: {
+                    show: true,
+                    position: 'inside',
+                    offset: [0,-2],
+                    fontWeight: 300,
+                    fontSize: 13,
+                  },
                   data: [
-                    {type: 'max', name: 'Max',},
+                    {type: 'min', name: 'Best',},
                   ],
                 },
               },
               {
                 name: 'Explosiveness',
                 type: 'bar',
+                barGap: 0,
                 label: {
                   show: true,
                   position: 'insideBottom',
-                  distance: 10,
+                  distance: 8,
                   align: 'left',
                   verticalAlign: 'middle',
                   rotate: 90,
                   formatter: '{@Explosiveness}  {name|{a}}',
                   fontSize: 16,
+                  fontWeight: 300,
                   rich: {
                     name: {},
                   }
                 },
+                itemStyle: {
+                  borderRadius: [8,8,0,0],
+                },
                 emphasis: {focus: 'series'},
+                blur: {
+                  label: {
+                    show: false,
+                  },
+                },
                 animationDelay: function (idx) {
                   return idx * 10 + 100;
                 },
                 markPoint: {
+                  symbol: 'pin',
+                  symbolSize: 60,
+                  label: {
+                    show: true,
+                    position: 'inside',
+                    offset: [0,-2],
+                    fontWeight: 300,
+                    fontSize: 13,
+                  },
                   data: [
-                    {type: 'max', name: 'Max',},
+                    {type: 'min', name: 'Best',},
                   ],
                 },
               },
               {
                 name: 'Speed',
                 type: 'bar',
+                barGap: 0,
                 label: {
                   show: true,
                   position: 'insideBottom',
-                  distance: 10,
+                  distance: 8,
                   align: 'left',
                   verticalAlign: 'middle',
                   rotate: 90,
                   formatter: '{@Speed}  {name|{a}}',
                   fontSize: 16,
+                  fontWeight: 300,
                   rich: {
                     name: {},
                   }
                 },
+                itemStyle: {
+                  borderRadius: [8,8,0,0],
+                },
                 emphasis: {focus: 'series'},
+                blur: {
+                  label: {
+                    show: false,
+                  },
+                },
+                clip: true,
                 animationDelay: function (idx) {
                   return idx * 10 + 100;
                 },
                 markPoint: {
+                  symbol: 'pin',
+                  symbolSize: 60,
+                  label: {
+                    show: true,
+                    position: 'inside',
+                    offset: [0,-2],
+                    fontWeight: 300,
+                    fontSize: 13,
+                  },
                   data: [
-                    {type: 'max', name: 'Max',},
+                    {type: 'min', name: 'Best',},
                   ],
                 },
               },
               {
                 name: 'Endurance',
                 type: 'bar',
+                barGap: 0,
                 label: {
                   show: true,
                   position: 'insideBottom',
-                  distance: 10,
+                  distance: 8,
                   align: 'left',
                   verticalAlign: 'middle',
                   rotate: 90,
                   formatter: '{@Endurance}  {name|{a}}',
                   fontSize: 16,
+                  fontWeight: 300,
                   rich: {
                     name: {},
                   }
                 },
-                
+                itemStyle: {
+                  borderRadius: [8,8,0,0],
+                },
                 emphasis: {focus: 'series'},
+                blur: {
+                  label: {
+                    show: false,
+                  },
+                },
+                clip: true,
                 animationDelay: function (idx) {
                   return idx * 10 + 100;
                 },
                 markPoint: {
+                  symbol: 'pin',
+                  symbolSize: 60,
+                  label: {
+                    show: true,
+                    position: 'inside',
+                    offset: [0,-2],
+                    fontWeight: 300,
+                    fontSize: 13,
+                  },
                   data: [
-                    {type: 'max', name: 'Max',},
+                    {type: 'max', name: 'Best',},
                   ],
                 },
               }
             ]
-          }'''
-      ),
+          }'''),
     );
   }
 }

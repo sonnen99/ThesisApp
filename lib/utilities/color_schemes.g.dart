@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 const lightColorScheme = ColorScheme(
@@ -36,7 +38,7 @@ const lightColorScheme = ColorScheme(
 
 const darkColorScheme = ColorScheme(
   brightness: Brightness.dark,
-  primary: Color (0xFFB1C5FF),
+  primary: Color(0xFFB1C5FF),
   onPrimary: Color(0xFF002C72),
   primaryContainer: Color(0xFF0040A0),
   onPrimaryContainer: Color(0xFFDAE2FF),
@@ -68,7 +70,71 @@ const darkColorScheme = ColorScheme(
   scrim: Color(0xFF000000),
 );
 
-const Color red = Color(0xFFB42533);
-const Color yellow = Color(0xFFD0CB54);
-const Color green = Color(0xFF006C4A);
-
+String getColor(BuildContext context, String color) {
+  Color returnColor = const Color(0xFFFFFFFF);
+  switch (Theme.of(context).brightness) {
+    case Brightness.light:
+      switch (color) {
+        case 'blue':
+          returnColor = const Color(0xFF395AAE);
+          break;
+        case 'green':
+          returnColor = const Color(0xFF026D36);
+          break;
+        case 'brown':
+          returnColor = const Color(0xFF855300);
+          break;
+        case 'pink':
+          returnColor = const Color(0xFFA83156);
+          break;
+        case 'red':
+          returnColor = const Color(0xFFB42533);
+          break;
+        case 'turquoise':
+          returnColor = const Color(0xFF00687B);
+          break;
+        case 'violet':
+          returnColor = const Color(0xFF6351A5);
+          break;
+        case 'yellow':
+          returnColor = const Color(0xFF646100);
+          break;
+        default:
+          returnColor = const Color(0xFFFFFFFF);
+          break;
+      }
+      break;
+    case Brightness.dark:
+      switch (color) {
+        case 'blue':
+          returnColor = const Color(0xFFB3C5FF);
+          break;
+        case 'green':
+          returnColor = const Color(0xFF66DE8B);
+          break;
+        case 'brown':
+          returnColor = const Color(0xFFFFB95F);
+          break;
+        case 'pink':
+          returnColor = const Color(0xFFFFB1C1);
+          break;
+        case 'red':
+          returnColor = const Color(0xFFFFB3B1);
+          break;
+        case 'turquoise':
+          returnColor = const Color(0xFF50D6F7);
+          break;
+        case 'violet':
+          returnColor = const Color(0xFFCCBEFF);
+          break;
+        case 'yellow':
+          returnColor = const Color(0xFFD0CB54);
+          break;
+        default:
+          returnColor = const Color(0xFF000000);
+          break;
+      }
+      break;
+  }
+  return jsonEncode('#${returnColor.value.toRadixString(16).substring(2)}');
+}
