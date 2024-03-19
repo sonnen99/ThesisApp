@@ -14,12 +14,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List<Map<String, Object>> _data1 = [
     {
       'name': 'Please wait',
-      'Jump height': 0,
-      'Jump distance': 0,
-      'Agility': 0,
-      'Explosiveness': 0,
-      'Speed': 0,
-      'Endurance': 0,
+      'Clean high pull': 0,
+      'Push press': 0,
+      'Pump squat': 0,
+      'Dead lift': 0,
+
     },
   ];
 
@@ -29,22 +28,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     const dataObj = [
       {
-        'name': 'Jan 24',
-        'Jump height': 2.34,
-        'Jump distance': 2.14,
-        'Agility': 5.21,
-        'Explosiveness': 1.6,
-        'Speed': 3.3,
-        'Endurance': 5.9,
+        'name': '15 Jan 24',
+        'Clean high pull': 720,
+        'Push press': 780,
+        'Pump squat': 3240,
+        'Dead lift': 1080,
       },
       {
-        'name': 'Mar 24',
-        'Jump height': 2.45,
-        'Jump distance': 2.10,
-        'Agility': 5.1,
-        'Explosiveness': 1.4,
-        'Speed': 3.5,
-        'Endurance': 6.4,
+        'name': '23 Feb 24',
+        'Clean high pull': 1120,
+        'Push press': 660,
+        'Pump squat': 3600,
+        'Dead lift': 1160,
+      },
+      {
+        'name': '04 Mar 24',
+        'Clean high pull': 960,
+        'Push press': 640,
+        'Pump squat': 2880,
+        'Dead lift': 1730,
       },
     ];
 
@@ -148,6 +150,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 position: 'bottom',
                 name: 'Date',
                 nameLocation: 'middle',
+                nameTextStyle: {
+                  verticalAlign: 'top',
+                  lineHeight: 32,
+                },
                 inverse: false,
                 boundaryGap: true,
                 axisLine: {
@@ -204,7 +210,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
             series: [
               {
-                name: 'Jump height',
+                name: 'Clean high pull',
                 type: 'bar',
                 barGap: 0,
                 label: {
@@ -253,7 +259,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               },
               {
-                name: 'Jump distance',
+                name: 'Push press',
                 type: 'bar',
                 barGap: 0,
                 label: {
@@ -299,7 +305,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               },
               {
-                name: 'Agility',
+                name: 'Pump squat',
                 type: 'bar',
                 barGap: 0,
                 label: {
@@ -340,12 +346,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     fontSize: 13,
                   },
                   data: [
-                    {type: 'min', name: 'Best',},
+                    {type: 'max', name: 'Best',},
                   ],
                 },
               },
               {
-                name: 'Explosiveness',
+                name: 'Dead lift',
                 type: 'bar',
                 barGap: 0,
                 label: {
@@ -385,102 +391,102 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     fontSize: 13,
                   },
                   data: [
-                    {type: 'min', name: 'Best',},
-                  ],
-                },
-              },
-              {
-                name: 'Speed',
-                type: 'bar',
-                barGap: 0,
-                label: {
-                  show: true,
-                  position: 'insideBottom',
-                  distance: 8,
-                  align: 'left',
-                  verticalAlign: 'middle',
-                  rotate: 90,
-                  formatter: '{@Speed}  {name|{a}}',
-                  fontSize: 16,
-                  fontWeight: 300,
-                  rich: {
-                    name: {},
-                  }
-                },
-                itemStyle: {
-                  borderRadius: [8,8,0,0],
-                },
-                emphasis: {focus: 'series'},
-                blur: {
-                  label: {
-                    show: false,
-                  },
-                },
-                clip: true,
-                animationDelay: function (idx) {
-                  return idx * 10 + 100;
-                },
-                markPoint: {
-                  symbol: 'pin',
-                  symbolSize: 60,
-                  label: {
-                    show: true,
-                    position: 'inside',
-                    offset: [0,-2],
-                    fontWeight: 300,
-                    fontSize: 13,
-                  },
-                  data: [
-                    {type: 'min', name: 'Best',},
-                  ],
-                },
-              },
-              {
-                name: 'Endurance',
-                type: 'bar',
-                barGap: 0,
-                label: {
-                  show: true,
-                  position: 'insideBottom',
-                  distance: 8,
-                  align: 'left',
-                  verticalAlign: 'middle',
-                  rotate: 90,
-                  formatter: '{@Endurance}  {name|{a}}',
-                  fontSize: 16,
-                  fontWeight: 300,
-                  rich: {
-                    name: {},
-                  }
-                },
-                itemStyle: {
-                  borderRadius: [8,8,0,0],
-                },
-                emphasis: {focus: 'series'},
-                blur: {
-                  label: {
-                    show: false,
-                  },
-                },
-                clip: true,
-                animationDelay: function (idx) {
-                  return idx * 10 + 100;
-                },
-                markPoint: {
-                  symbol: 'pin',
-                  symbolSize: 60,
-                  label: {
-                    show: true,
-                    position: 'inside',
-                    offset: [0,-2],
-                    fontWeight: 300,
-                    fontSize: 13,
-                  },
-                  data: [
                     {type: 'max', name: 'Best',},
                   ],
                 },
-              }
+              },
+              // {
+              //   name: 'Speed',
+              //   type: 'bar',
+              //   barGap: 0,
+              //   label: {
+              //     show: true,
+              //     position: 'insideBottom',
+              //     distance: 8,
+              //     align: 'left',
+              //     verticalAlign: 'middle',
+              //     rotate: 90,
+              //     formatter: '{@Speed}  {name|{a}}',
+              //     fontSize: 16,
+              //     fontWeight: 300,
+              //     rich: {
+              //       name: {},
+              //     }
+              //   },
+              //   itemStyle: {
+              //     borderRadius: [8,8,0,0],
+              //   },
+              //   emphasis: {focus: 'series'},
+              //   blur: {
+              //     label: {
+              //       show: false,
+              //     },
+              //   },
+              //   clip: true,
+              //   animationDelay: function (idx) {
+              //     return idx * 10 + 100;
+              //   },
+              //   markPoint: {
+              //     symbol: 'pin',
+              //     symbolSize: 60,
+              //     label: {
+              //       show: true,
+              //       position: 'inside',
+              //       offset: [0,-2],
+              //       fontWeight: 300,
+              //       fontSize: 13,
+              //     },
+              //     data: [
+              //       {type: 'min', name: 'Best',},
+              //     ],
+              //   },
+              // },
+              // {
+              //   name: 'Endurance',
+              //   type: 'bar',
+              //   barGap: 0,
+              //   label: {
+              //     show: true,
+              //     position: 'insideBottom',
+              //     distance: 8,
+              //     align: 'left',
+              //     verticalAlign: 'middle',
+              //     rotate: 90,
+              //     formatter: '{@Endurance}  {name|{a}}',
+              //     fontSize: 16,
+              //     fontWeight: 300,
+              //     rich: {
+              //       name: {},
+              //     }
+              //   },
+              //   itemStyle: {
+              //     borderRadius: [8,8,0,0],
+              //   },
+              //   emphasis: {focus: 'series'},
+              //   blur: {
+              //     label: {
+              //       show: false,
+              //     },
+              //   },
+              //   clip: true,
+              //   animationDelay: function (idx) {
+              //     return idx * 10 + 100;
+              //   },
+              //   markPoint: {
+              //     symbol: 'pin',
+              //     symbolSize: 60,
+              //     label: {
+              //       show: true,
+              //       position: 'inside',
+              //       offset: [0,-2],
+              //       fontWeight: 300,
+              //       fontSize: 13,
+              //     },
+              //     data: [
+              //       {type: 'max', name: 'Best',},
+              //     ],
+              //   },
+              // }
             ]
           }'''),
     );
