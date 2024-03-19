@@ -20,6 +20,10 @@ dependencies:
   firebase_auth: ^4.17.4
   cloud_firestore: ^4.15.4
   flutter_reactive_ble: ^5.3.1
+  sprintf: ^6.0.0
+  permission_handler: ^10.4.1
+  simple_logger: ^1.9.0+2
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:thesisapp/screens/BLE_screen.dart';
 import 'package:thesisapp/screens/home_screen.dart';
 import 'package:thesisapp/screens/performance_screen.dart';
 import 'package:thesisapp/screens/profile_screen.dart';
 import 'package:thesisapp/screens/settings_screen.dart';
 import 'package:thesisapp/screens/teams_screen.dart';
-import 'package:thesisapp/utilities/color_schemes.g.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:thesisapp/utilities/constants.dart';
