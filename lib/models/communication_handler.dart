@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:thesisapp/models/ble_data.dart';
 import 'package:simple_logger/simple_logger.dart';
 import 'package:sprintf/sprintf.dart';
+import 'package:thesisapp/models/raw_data.dart';
 
 class CommunicationHandler {
   SimpleLogger logger = SimpleLogger();
@@ -20,6 +21,12 @@ class CommunicationHandler {
   static final Uuid temperatureMeasurement = Platform.isAndroid ? Uuid.parse("49535343-1e4d-4bd9-ba61-23c647249616") : Uuid.parse("0073");
 
   String deviceId = "";
+  int firstTimeStamp = 0;
+  int lastTimestamp = 0;
+  int newTimestamp = 0;
+  int nullTime = 0;
+  bool first = true;
+  List<RawData> rawDataList = [];
 
   CommunicationHandler() {
     bleConnectionHandler = BLEData();
@@ -62,26 +69,19 @@ class CommunicationHandler {
 
   void receivedCharacteristicValue({required QualifiedCharacteristic characteristic, required List<int> values}) {
     if (characteristic.characteristicId == deviceModelNumberCharacteristic) {
-      String value = utf8.decode(values);
-      logger.info('Device model: $value');
       subscribeToMeasurement(temperatureService, temperatureMeasurement);
     } else if (characteristic.characteristicId == temperatureMeasurement) {
       List<String> timestamps = [];
-      List<>
       if (values.isNotEmpty) {
-        timestamps = convertDataToTimestamps(values);
-        logger.info('Data: $timestamps');
-
+        timestamps = convertBytesToTimestamps(values);
+        rawDataList += convertTimestampsToData(timestamps);
       }
-      //TODO parse data
-      
     }
   }
 
-  List<String> convertDataToTimestamps(List<int> data) {
+  List<String> convertBytesToTimestamps(List<int> data) {
     List<String> timestamps = [];
     String currentTimestamp = '';
-
     for (int byte in data) {
       if (byte == 10 || byte == 13) {
         if (currentTimestamp.isNotEmpty) {
@@ -95,4 +95,51 @@ class CommunicationHandler {
     return timestamps;
   }
 
+  List<RawData> convertTimestampsToData(List<String> timestamps) {
+    List<RawData> rawData = [];
+    for (String timestamp in timestamps) {
+      String force = '';
+      String time = '';
+      String currentNumber = '';
+      var timestampList = [];
+      if (timestamp.contains('at') && !timestamp[0].contains(' ') && !timestamp[0].contains('a')) {
+        timestampList = timestamp.split('');
+      }
+      for (int i = 0; i < timestampList.length; i++) {
+        if (timestampList[i] == ' ') {
+          force = currentNumber;
+          currentNumber = '';
+          i += 3;
+        } else if (timestampList[i] == 'm') {
+          time = currentNumber;
+          if (first) {
+            firstTimeStamp = int.parse(time);
+            first = false;
+          }
+          rawData.add(RawData(force: int.parse(force), timestamp: int.parse(time) - firstTimeStamp));
+          break;
+        } else {
+          currentNumber += timestampList[i];
+        }
+      }
+    }
+
+    if (lastTimestamp == 0) {
+      lastTimestamp = rawData.last.timestamp;
+    } else {
+      newTimestamp = rawData.first.timestamp;
+      nullTime = newTimestamp - lastTimestamp;
+      if (nullTime > 1) {
+        for (int i = 1; i < nullTime; i++ ) {
+          rawData.insert(i - 1, RawData(force: 0, timestamp: i + lastTimestamp));
+        }
+      }
+      lastTimestamp = rawData.last.timestamp;
+    }
+
+    for (RawData data in rawData) {
+      logger.info('Force: ${data.force}, Time: ${data.timestamp}');
+    }
+    return rawData;
+  }
 }
