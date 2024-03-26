@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:thesisapp/models/ble_data.dart';
@@ -12,14 +11,10 @@ class CommunicationHandler {
   SimpleLogger logger = SimpleLogger();
   late final BLEData bleConnectionHandler;
 
-  // UUID
   static const String uuidFormat = "0000%s-0000-1000-8000-00805f9b34fb";
 
-  // device information
   static final Uuid deviceInformationService = Platform.isAndroid ? Uuid.parse(sprintf(uuidFormat, ["180a"])) : Uuid.parse("180a");
   static final Uuid deviceModelNumberCharacteristic = Platform.isAndroid ? Uuid.parse(sprintf(uuidFormat, ["2a24"])) : Uuid.parse("2a24");
-  static final Uuid serialNumberCharacteristic = Platform.isAndroid ? Uuid.parse(sprintf(uuidFormat, ["2a25"])) : Uuid.parse("2a25");
-  static final Uuid firmwareRevisionCharacteristic = Platform.isAndroid ? Uuid.parse(sprintf(uuidFormat, ["2a26"])) : Uuid.parse("2a26");
 
   static final Uuid temperatureService = Platform.isAndroid ? Uuid.parse("49535343-fe7d-4ae5-8fa9-9fafd205e455") : Uuid.parse("0072");
   static final Uuid temperatureMeasurement = Platform.isAndroid ? Uuid.parse("49535343-1e4d-4bd9-ba61-23c647249616") : Uuid.parse("0073");
@@ -42,7 +37,7 @@ class CommunicationHandler {
     bleConnectionHandler.connectToDevice(discoveredDevice, (isConnected) {
       deviceId = discoveredDevice.id;
       connectionStatus(isConnected);
-      if(isConnected) {
+      if (isConnected) {
         readDeviceInformation(deviceInformationService, deviceModelNumberCharacteristic);
       }
     });
@@ -50,15 +45,8 @@ class CommunicationHandler {
 
   Future<void> readDeviceInformation(Uuid service, Uuid characteristicToRead) async {
     final characteristic = QualifiedCharacteristic(serviceId: service, characteristicId: characteristicToRead, deviceId: deviceId);
-    // await bleConnectionHandler.flutterReactiveBle.discoverAllServices(deviceId);
-    // final services = await bleConnectionHandler.flutterReactiveBle.getDiscoveredServices(deviceId);
     final response = await bleConnectionHandler.flutterReactiveBle.readCharacteristic(characteristic);
     receivedCharacteristicValue(characteristic: characteristic, values: response);
-    // logger.info('response: $response');
-    // for (int i = 0; i < services.length; i++) {
-    //   logger.info('Service: ${services[i]}, Characteristics: ${services[i].characteristics} ');
-    // }
-
   }
 
   Future<void> subscribeToMeasurement(Uuid service, Uuid characteristicToNotify) async {
@@ -66,7 +54,6 @@ class CommunicationHandler {
     bleConnectionHandler.flutterReactiveBle.subscribeToCharacteristic(characteristic).listen((data) {
       if (data.isNotEmpty) {
         receivedCharacteristicValue(characteristic: characteristic, values: data);
-        //logger.info('Data: ${utf8.decode(data)}');
       }
     }, onError: (dynamic error) {
       logger.info('Error with read measurement : $error');
@@ -77,49 +64,35 @@ class CommunicationHandler {
     if (characteristic.characteristicId == deviceModelNumberCharacteristic) {
       String value = utf8.decode(values);
       logger.info('Device model: $value');
-      readDeviceInformation(deviceInformationService, serialNumberCharacteristic);
-    } else if (characteristic.characteristicId == serialNumberCharacteristic) {
-      String value = utf8.decode(values);
-      logger.info('SerialNumber: $value');
-      readDeviceInformation(deviceInformationService, firmwareRevisionCharacteristic);
-    } else if (characteristic.characteristicId == firmwareRevisionCharacteristic) {
-
       subscribeToMeasurement(temperatureService, temperatureMeasurement);
-
     } else if (characteristic.characteristicId == temperatureMeasurement) {
-      Uint8List data = Uint8List.fromList(values);
-      logger.info('value from device: ${utf8.decode(data)}');
-      // if (values.isNotEmpty) parseMeasurementValues(values);
+      List<String> timestamps = [];
+      List<>
+      if (values.isNotEmpty) {
+        timestamps = convertDataToTimestamps(values);
+        logger.info('Data: $timestamps');
+
+      }
+      //TODO parse data
+      
     }
   }
 
-  Future<void> parseMeasurementValues(List<int> values) async {
-    double temperatureValueCelsius = parseTemperatureValue(values, 1);
+  List<String> convertDataToTimestamps(List<int> data) {
+    List<String> timestamps = [];
+    String currentTimestamp = '';
 
-    // int unit = values[0] & 0x01;
-    // temperatureUnit == 1 -> Fahrenheit; convert to Celsius
-    // if (unit == 1) {
-    //   temperatureValueCelsius = (temperatureValueCelsius - 32) * 5 / 9;
-    // }
-
-    logger.warning("Temperature Value Celsius: $temperatureValueCelsius");
+    for (int byte in data) {
+      if (byte == 10 || byte == 13) {
+        if (currentTimestamp.isNotEmpty) {
+          timestamps.add(currentTimestamp.trim());
+          currentTimestamp = '';
+        }
+      } else {
+        currentTimestamp += String.fromCharCode(byte);
+      }
+    }
+    return timestamps;
   }
 
-  double parseTemperatureValue(List<int> data, int startingIndex) {
-    int temperatureValue = 0;
-    temperatureValue = temperatureValue + ((data[startingIndex] & 0xff) << 0);
-    temperatureValue = temperatureValue + ((data[startingIndex + 1] & 0xff) << 8);
-    temperatureValue = temperatureValue + ((data[startingIndex + 2] & 0xff) << 16);
-    temperatureValue = temperatureValue & 0x00ffffff;
-
-    int exponent = 127;
-    return convertToFloat(temperatureValue, exponent);
-  }
-
-  double convertToFloat(int temperatureValue, int exponent) {
-    int exponentAdjusted = exponent - 127;
-    double value = temperatureValue.toDouble() * pow(2, exponentAdjusted);
-    double tempValue = value / 10;
-    return tempValue;
-  }
 }
