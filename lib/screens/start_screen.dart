@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:thesisapp/screens/BLE_screen.dart';
 import 'package:thesisapp/screens/home_screen.dart';
 import 'package:thesisapp/screens/performance_screen.dart';
 import 'package:thesisapp/screens/profile_screen.dart';
@@ -35,30 +34,13 @@ class _StartScreenState extends State<StartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget page;
-    switch (currentIndex) {
-      case 0:
-        page = HomeScreen();
-        break;
-      case 1:
-        page = TeamsScreen();
-        break;
-      case 2:
-        page = SettingsScreen();
-        break;
-      case 3:
-        page = ProfileScreen();
-        break;
-      default:
-        page = HomeScreen();
-    }
     return LayoutBuilder(builder: (context, constraints) {
       return SafeArea(
         child: Scaffold(
           appBar: AppBar(
             title: Text(
               screenList[currentIndex],
-              style: TextStyle(fontWeight: FontWeight.w100),
+              style: kTitleStyle,
             ),
           ),
           floatingActionButtonLocation:
@@ -69,7 +51,7 @@ class _StartScreenState extends State<StartScreen> {
             onPressed: () {
               Navigator.pushNamed(context, PerformanceScreen.id);
             },
-            shape: CircleBorder(),
+            shape: const CircleBorder(),
             child: Icon(
               Symbols.keyboard_arrow_up_rounded,
               size: 48.0,
@@ -91,7 +73,7 @@ class _StartScreenState extends State<StartScreen> {
                 ProfileScreen(),
               ]),
           bottomNavigationBar: Padding(
-            padding: EdgeInsets.only(bottom: 10.0),
+            padding: const EdgeInsets.only(bottom: 10.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(32),
               child: BackdropFilter(
@@ -103,7 +85,7 @@ class _StartScreenState extends State<StartScreen> {
                     setState(() {
                       currentIndex = value;
                       _pageController.animateToPage(currentIndex,
-                          duration: Duration(milliseconds: 800),
+                          duration: const Duration(milliseconds: 800),
                           curve: Curves.fastOutSlowIn);
                     });
                   },

@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
+const kIconData = IconThemeData(
+  fill: 0,
+  weight: 200,
+  opticalSize: 48,
+  grade: 200,
+  size: 40,
+);
+
 final iconList = <IconData>[
   Symbols.home_rounded,
   Symbols.groups_rounded,
@@ -15,3 +23,4 @@ final screenList = <String>[
   'Profile',
 ];
 
+const kTitleStyle = TextStyle(fontWeight: FontWeight.w100);

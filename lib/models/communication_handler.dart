@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:thesisapp/models/ble_data.dart';
@@ -20,11 +21,8 @@ class CommunicationHandler {
   static final Uuid serialNumberCharacteristic = Platform.isAndroid ? Uuid.parse(sprintf(uuidFormat, ["2a25"])) : Uuid.parse("2a25");
   static final Uuid firmwareRevisionCharacteristic = Platform.isAndroid ? Uuid.parse(sprintf(uuidFormat, ["2a26"])) : Uuid.parse("2a26");
 
-  static final Uuid batteryLevelService = Platform.isAndroid ? Uuid.parse(sprintf(uuidFormat, ["180f"])) : Uuid.parse("180f");
-  static final Uuid batteryLevelCharacteristic = Platform.isAndroid ? Uuid.parse(sprintf(uuidFormat, ["2a19"])) : Uuid.parse("2a19");
-
-  static final Uuid temperatureService = Platform.isAndroid ? Uuid.parse(sprintf(uuidFormat, ["1809"])) : Uuid.parse("1809");
-  static final Uuid temperatureMeasurement = Platform.isAndroid ? Uuid.parse(sprintf(uuidFormat, ["2a1c"])) : Uuid.parse("2a1c");
+  static final Uuid temperatureService = Platform.isAndroid ? Uuid.parse("49535343-fe7d-4ae5-8fa9-9fafd205e455") : Uuid.parse("0072");
+  static final Uuid temperatureMeasurement = Platform.isAndroid ? Uuid.parse("49535343-1e4d-4bd9-ba61-23c647249616") : Uuid.parse("0073");
 
   String deviceId = "";
 
@@ -52,8 +50,15 @@ class CommunicationHandler {
 
   Future<void> readDeviceInformation(Uuid service, Uuid characteristicToRead) async {
     final characteristic = QualifiedCharacteristic(serviceId: service, characteristicId: characteristicToRead, deviceId: deviceId);
+    // await bleConnectionHandler.flutterReactiveBle.discoverAllServices(deviceId);
+    // final services = await bleConnectionHandler.flutterReactiveBle.getDiscoveredServices(deviceId);
     final response = await bleConnectionHandler.flutterReactiveBle.readCharacteristic(characteristic);
     receivedCharacteristicValue(characteristic: characteristic, values: response);
+    // logger.info('response: $response');
+    // for (int i = 0; i < services.length; i++) {
+    //   logger.info('Service: ${services[i]}, Characteristics: ${services[i].characteristics} ');
+    // }
+
   }
 
   Future<void> subscribeToMeasurement(Uuid service, Uuid characteristicToNotify) async {
@@ -61,6 +66,7 @@ class CommunicationHandler {
     bleConnectionHandler.flutterReactiveBle.subscribeToCharacteristic(characteristic).listen((data) {
       if (data.isNotEmpty) {
         receivedCharacteristicValue(characteristic: characteristic, values: data);
+        //logger.info('Data: ${utf8.decode(data)}');
       }
     }, onError: (dynamic error) {
       logger.info('Error with read measurement : $error');
@@ -77,16 +83,13 @@ class CommunicationHandler {
       logger.info('SerialNumber: $value');
       readDeviceInformation(deviceInformationService, firmwareRevisionCharacteristic);
     } else if (characteristic.characteristicId == firmwareRevisionCharacteristic) {
-      String value = utf8.decode(values);
-      logger.info('Firmware: $value');
-      readDeviceInformation(batteryLevelService, batteryLevelCharacteristic);
-    } else if (characteristic.characteristicId == batteryLevelCharacteristic) {
-      int batteryValue = values[0];
-      logger.info('Battery value: $batteryValue');
+
       subscribeToMeasurement(temperatureService, temperatureMeasurement);
+
     } else if (characteristic.characteristicId == temperatureMeasurement) {
-      logger.info('value from device: $values');
-      if (values.isNotEmpty) parseMeasurementValues(values);
+      Uint8List data = Uint8List.fromList(values);
+      logger.info('value from device: ${utf8.decode(data)}');
+      // if (values.isNotEmpty) parseMeasurementValues(values);
     }
   }
 

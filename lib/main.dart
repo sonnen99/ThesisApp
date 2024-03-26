@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:thesisapp/screens/BLE_screen.dart';
 import 'package:thesisapp/screens/performance_screen.dart';
 import 'package:thesisapp/screens/profile_screen.dart';
 import 'package:thesisapp/screens/settings_screen.dart';
@@ -29,7 +28,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       theme: MyTheme.lightThemeData(context),
       darkTheme: MyTheme.darkThemeData(),
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.dark,
       initialRoute: StartScreen.id,
       routes: {
         StartScreen.id: (context) => StartScreen(),

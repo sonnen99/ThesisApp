@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:thesisapp/utilities/constants.dart';
 import 'color_schemes.g.dart';
 
 class MyTheme {
@@ -6,13 +7,7 @@ class MyTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: lightColorScheme,
-      iconTheme: const IconThemeData(
-        fill: 0,
-        weight: 200,
-        opticalSize: 48,
-        grade: 200,
-        size: 40,
-      ),
+      iconTheme: kIconData,
       fontFamily: 'Inter',
       appBarTheme: const AppBarTheme(elevation: 5.0),
     );
@@ -22,13 +17,7 @@ class MyTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: darkColorScheme,
-      iconTheme: const IconThemeData(
-        fill: 0,
-        weight: 200,
-        opticalSize: 48,
-        grade: 2000,
-        size: 40,
-      ),
+      iconTheme: kIconData,
       fontFamily: 'Inter',
       appBarTheme: const AppBarTheme(elevation: 5.0),
     );

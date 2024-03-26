@@ -29,15 +29,3 @@ class BLETile extends StatelessWidget {
     );
   }
 }
-// Padding(
-// padding: const EdgeInsets.all(5),
-// child: Container(
-// height: 60,
-// color: Theme.of(context).colorScheme.secondaryContainer,
-// child: Center(
-// child: TextButton(
-// child: Text(discoveredDevices[index].name),
-// onPressed:
-// )),
-// ),
-// );
