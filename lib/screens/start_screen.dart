@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:thesisapp/screens/home_screen.dart';
-import 'package:thesisapp/screens/ble_screen.dart';
+import 'package:thesisapp/screens/sensor_screen.dart';
 import 'package:thesisapp/screens/profile_screen.dart';
 import 'package:thesisapp/screens/settings_screen.dart';
 import 'package:thesisapp/screens/teams_screen.dart';
@@ -49,7 +49,7 @@ class _StartScreenState extends State<StartScreen> {
             backgroundColor: Theme.of(context).colorScheme.primary,
             heroTag: 'performance',
             onPressed: () {
-              Navigator.pushNamed(context, BLEScreen.id);
+              Navigator.pushNamed(context, SensorScreen.id);
             },
             shape: const CircleBorder(),
             child: Icon(

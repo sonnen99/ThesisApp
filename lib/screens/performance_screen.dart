@@ -1,10 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_echarts/flutter_echarts.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:provider/provider.dart';
 import 'package:thesisapp/models/communication_handler.dart';
+import 'package:thesisapp/models/raw_data_list.dart';
 import 'package:thesisapp/widgets/ble_tile.dart';
+import 'package:real_time_chart/real_time_chart.dart';
 
+import '../models/chart_handler.dart';
 import '../utilities/constants.dart';
 import '../widgets/pb_icon_button.dart';
 
@@ -33,54 +39,58 @@ class _PerformanceScreenState extends State<PerformanceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: PBButton(
-            icon: Symbols.keyboard_arrow_left_rounded,
-            size: 32.0,
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          title: const Text(
-            'Performance collection',
-            style: kTitleStyle,
-          ),
+      appBar: AppBar(
+        leading: PBButton(
+          icon: Symbols.keyboard_arrow_left_rounded,
+          size: 32.0,
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children: [
-              BLETile(
-                bleTitle: widget.device.name,
-                onPress: () {
-                  connectToDevice(widget.device);
-                },
-                isConnected: connectionState,
-                leading: isConnected
-                    ? const Icon(
-                        Symbols.bluetooth_connected_rounded,
+        title: const Text(
+          'Performance collection',
+          style: kTitleStyle,
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          children: [
+            BLETile(
+              bleTitle: widget.device.name,
+              onPress: () {
+                connectToDevice(widget.device);
+              },
+              isConnected: connectionState,
+              leading: isConnected
+                  ? const Icon(
+                      Symbols.bluetooth_connected_rounded,
+                      size: 24.0,
+                    )
+                  : SpinKitWaveSpinner(
+                      //dual ring, , , ripple, spinning lines, wave spinner
+                      trackColor: Theme.of(context).colorScheme.secondaryContainer,
+                      waveColor: Theme.of(context).colorScheme.primary,
+                      curve: Curves.fastOutSlowIn,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 54.0,
+                      duration: const Duration(milliseconds: 1400),
+                      child: const Icon(
+                        Symbols.bluetooth_searching_rounded,
                         size: 24.0,
-                      )
-                    : SpinKitWaveSpinner( //dual ring, , , ripple, spinning lines, wave spinner
-                        trackColor: Theme.of(context).colorScheme.secondaryContainer,
-                        waveColor: Theme.of(context).colorScheme.primary,
-                        curve: Curves.fastOutSlowIn,
-                        color: Theme.of(context).colorScheme.primary,
-                        size: 54.0,
-                        duration: const Duration(milliseconds: 1400),
-                        child: const Icon(
-                          Symbols.bluetooth_searching_rounded,
-                          size: 24.0,
-                        ),
                       ),
-              ),
-            ],
-          ),
-        ));
+                    ),
+            ),
+            RawDataList(),
+            // RealTimeGraph(stream: dataStream(),),
+          ],
+        ),
+      ),
+    );
   }
 
   Future<void> connectToDevice(DiscoveredDevice selectedDevice) async {
-    communicationHandler ??= CommunicationHandler();
+    communicationHandler ??= CommunicationHandler(context);
     await communicationHandler?.stopScan();
     communicationHandler?.connectToDevice(selectedDevice, (isConnected, status) {
       setState(() {
@@ -89,4 +99,8 @@ class _PerformanceScreenState extends State<PerformanceScreen> {
       });
     });
   }
+
+// Stream<int> dataStream() {
+//   return Stream.
+// }
 }

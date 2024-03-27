@@ -1,16 +1,18 @@
-import 'dart:convert';
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
-import 'package:thesisapp/models/ble_data.dart';
+import 'package:provider/provider.dart';
+import 'package:thesisapp/models/connection_handler.dart';
 import 'package:simple_logger/simple_logger.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:thesisapp/models/raw_data.dart';
+import 'package:thesisapp/models/raw_data_handler.dart';
 
-class CommunicationHandler {
+class CommunicationHandler extends ChangeNotifier{
   SimpleLogger logger = SimpleLogger();
-  late final BLEData bleConnectionHandler;
+  late final BLEConnection bleConnectionHandler;
 
   static const String uuidFormat = "0000%s-0000-1000-8000-00805f9b34fb";
 
@@ -26,11 +28,12 @@ class CommunicationHandler {
   int newTimestamp = 0;
   int nullTime = 0;
   bool first = true;
-  List<RawData> rawDataList = [];
+  final BuildContext context;
 
-  CommunicationHandler() {
-    bleConnectionHandler = BLEData();
+  CommunicationHandler(this.context) {
+    bleConnectionHandler = BLEConnection();
   }
+
 
   void startScan(Function(DiscoveredDevice) scanDevice) {
     bleConnectionHandler.startBluetoothScan((discoveredDevice) => {scanDevice(discoveredDevice)});
@@ -63,7 +66,7 @@ class CommunicationHandler {
       List<String> timestamps = [];
       if (values.isNotEmpty) {
         timestamps = convertBytesToTimestamps(values);
-        rawDataList += convertTimestampsToData(timestamps);
+        convertTimestampsToData(timestamps);
       }
     }
   }
@@ -95,7 +98,7 @@ class CommunicationHandler {
     return timestamps;
   }
 
-  List<RawData> convertTimestampsToData(List<String> timestamps) {
+  void convertTimestampsToData(List<String> timestamps) {
     List<RawData> rawData = [];
     for (String timestamp in timestamps) {
       String force = '';
@@ -138,8 +141,8 @@ class CommunicationHandler {
     }
 
     for (RawData data in rawData) {
+      Provider.of<RawDataHandler>(context, listen: false).addData(data.force, data.timestamp);
       logger.info('Force: ${data.force}, Time: ${data.timestamp}');
     }
-    return rawData;
   }
 }

@@ -6,7 +6,7 @@ import 'package:simple_logger/simple_logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'communication_handler.dart';
 
-class BLEData {
+class BLEConnection {
   SimpleLogger logger = SimpleLogger();
 
   final flutterReactiveBle = FlutterReactiveBle();

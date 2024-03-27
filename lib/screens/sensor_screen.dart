@@ -13,14 +13,14 @@ import 'package:thesisapp/widgets/ble_tile.dart';
 import 'package:thesisapp/widgets/pb_elevated_button.dart';
 import 'package:thesisapp/widgets/pb_icon_button.dart';
 
-class BLEScreen extends StatefulWidget {
+class SensorScreen extends StatefulWidget {
   static const String id = 'ble_screen';
 
   @override
-  State<BLEScreen> createState() => _BLEScreenState();
+  State<SensorScreen> createState() => _SensorScreenState();
 }
 
-class _BLEScreenState extends State<BLEScreen> {
+class _SensorScreenState extends State<SensorScreen> {
   SimpleLogger logger = SimpleLogger();
   CommunicationHandler? communicationHandler;
   bool isScanStarted = false;
@@ -103,25 +103,6 @@ class _BLEScreenState extends State<BLEScreen> {
         ));
   }
 
-  // Center(
-  // child: PBElevatedButton(
-  // onPressed:
-  // child: Row(
-  // mainAxisSize: MainAxisSize.min,
-  // children: [
-  // Icon(
-  // Symbols.bluetooth,
-  // size: 24.0,
-  // ),
-  // Text(
-  // isScanStarted ? "Stop Scan" : "Start Scan",
-  // style: TextStyle(fontWeight: FontWeight.w300, fontSize: 20.0),
-  // ),
-  // ],
-  // ),
-  // ),
-  // ),
-
   @override
   void initState() {
     checkPermissions();
@@ -143,7 +124,7 @@ class _BLEScreenState extends State<BLEScreen> {
 
   void startScan() {
     isConnected = false;
-    communicationHandler ??= CommunicationHandler();
+    communicationHandler ??= CommunicationHandler(context);
     communicationHandler?.startScan((scanDevice) {
       logger.info("Scan device: ${scanDevice.name}");
       if (discoveredDevices.firstWhereOrNull((val) => val.id == scanDevice.id) == null) {

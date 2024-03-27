@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:simple_logger/simple_logger.dart';
 import 'package:thesisapp/models/parameter.dart';
 import 'package:thesisapp/models/parameter_radar.dart';
+import 'package:thesisapp/models/raw_data.dart';
 import 'package:thesisapp/utilities/color_schemes.g.dart';
 import 'package:flutter/material.dart';
 
@@ -69,6 +71,7 @@ String getBarSeries() {
 }
 
 const String xValue = 'Date';
+const String xValue2 = 'Time';
 
 String getBarOption(BuildContext context, List<Map<String, Object>> data1) {
   return '''{
@@ -126,7 +129,6 @@ String getBarOption(BuildContext context, List<Map<String, Object>> data1) {
                   show: true,
                   type: ['line', 'bar']
                 },
-                saveAsImage: {},
               }
             },
             tooltip: {
@@ -209,6 +211,156 @@ String getBarOption(BuildContext context, List<Map<String, Object>> data1) {
             ],
             series: ${getBarSeries()},
           }''';
+}
+
+String getLineOption(BuildContext context, List<RawData> rawData) {
+  List<List<Object>> data = [];
+  data = convertRawdataToMap(rawData);
+  return '''{
+            color: [${getColor(context, 'blue')}],
+            textStyle: {
+              fontWeight: 400,
+            },
+            // legend: {
+            //   data: ${jsonEncode(parameterList)},
+            //   type: 'scroll',
+            //   orient: 'horizontal',
+            //   pageButtonItemGap: 6,
+            //   pageButtonGap: 10,
+            //   pageButtonPosition: 'end',
+            //   pageIconColor: ${jsonEncode('#${Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2)}')},
+            //   pageIconInactiveColor: ${jsonEncode('#${Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2)}')},
+            //   pageIconSize: 14,
+            //   pageTextStyle: {
+            //     color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurfaceVariant.value.toRadixString(16).substring(2)}')},
+            //     fontWeight: 200,
+            //   },
+            //   animationDurationUpdate: 500,
+            //   bottom: '12.4%',
+            //   padding: [0,10,0,10],
+            //   itemGap: 10,
+            //   itemWidth: 16,
+            //   itemHeight: 16,
+            //   textStyle: {
+            //     color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurface.value.toRadixString(16).substring(2)}')},
+            //     fontWeight: 200,
+            //     fontSize: 14,
+            //   },
+            //   selectedMode: 'multiple',
+            //   inactiveColor: ${jsonEncode('#${Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2)}')},
+            //   icon: 'roundRect',
+            // },
+            grid: {
+              left: '5%',
+              right: '7%',
+              top: '5.1%',
+              height: '78%',
+              containLabel: true,          
+            },
+            toolbox: {
+              show: true,
+              orient: 'vertical',
+              left: 'right',
+              top: 'center',
+              feature: {
+                dataZoom: {
+                  yAxisIndex: 'none',
+                },
+                restore: {},
+                mark: {show: true},
+              }
+            },
+            tooltip: {
+              trigger: 'axis',
+              // position: 'bottom',
+              // backgroundColor: ${jsonEncode('#${Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2)}')},
+              // textStyle: {
+              //   fontWeight: 300,
+              //   fontSize: 16,
+              //   color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurfaceVariant.value.toRadixString(16).substring(2)}')},
+              // },
+            },
+            animationEasing: 'elasticOut',
+            animationDelayUpdate: function (idx) {
+              return idx * 5;
+            },
+            xAxis: [
+              {
+                type: 'category',
+                position: 'bottom',
+                name: ${jsonEncode(xValue2)},
+                nameLocation: 'middle',
+                nameTextStyle: {
+                  verticalAlign: 'top',
+                  lineHeight: 32,
+                },
+                inverse: false,
+                boundaryGap: true,
+                axisLine: {
+                  show: true,
+                  lineStyle: {
+                    cap: 'round',
+                    join: 'round',
+                  },
+                },
+                axisTick: {
+                  show: true,
+                  alignWithLabel: false,
+                  inside: false,
+                  length: 8,
+                  lineStyle: {
+                    cap: 'round',
+                    join: 'round',
+                  },
+                },
+                axisLabel: {
+                  hideOverlap: true,
+                },
+                splitLine: {
+                  show: false,
+                },
+              }
+            ],
+            yAxis: 
+              {
+                // type: 'value',
+                // position: 'left',
+                // scale: false,
+                // minInterval: 0.5,
+                // axisLine: {
+                //   show: false,
+                //   lineStyle: {
+                //     cap: 'round',
+                //     join: 'round',
+                //   },
+                // },
+                // axisTick: {
+                //   show: false,
+                // },
+                // splitLine: {
+                //   show: true,
+                //   lineStyle: {
+                //     color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurfaceVariant.value.toRadixString(16).substring(2)}')},
+                //     width: 0.7,
+                //     cap: 'round',
+                //     join: 'round',
+                //   },
+                // },
+              }
+            ,
+            series: {
+              type: 'line',
+              data: ${jsonEncode(data)},
+            },
+          }''';
+}
+
+List<List<Object>> convertRawdataToMap(List<RawData> rawData) {
+  List<List<Object>> newData = [];
+  for (RawData rawDataPoint in rawData) {
+    newData.add([rawDataPoint.timestamp.toString(), rawDataPoint.force]);
+  }
+  return newData;
 }
 
 String getIndicator() {
