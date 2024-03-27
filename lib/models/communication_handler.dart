@@ -40,10 +40,10 @@ class CommunicationHandler {
     await bleConnectionHandler.stopScan();
   }
 
-  void connectToDevice(DiscoveredDevice discoveredDevice, Function(bool) connectionStatus) {
-    bleConnectionHandler.connectToDevice(discoveredDevice, (isConnected) {
+  void connectToDevice(DiscoveredDevice discoveredDevice, Function(bool, DeviceConnectionState) connectionStatus) {
+    bleConnectionHandler.connectToDevice(discoveredDevice, (isConnected, status) {
       deviceId = discoveredDevice.id;
-      connectionStatus(isConnected);
+      connectionStatus(isConnected, status);
       if (isConnected) {
         readDeviceInformation(deviceInformationService, deviceModelNumberCharacteristic);
       }
@@ -56,17 +56,6 @@ class CommunicationHandler {
     receivedCharacteristicValue(characteristic: characteristic, values: response);
   }
 
-  Future<void> subscribeToMeasurement(Uuid service, Uuid characteristicToNotify) async {
-    final characteristic = QualifiedCharacteristic(serviceId: service, characteristicId: characteristicToNotify, deviceId: deviceId);
-    bleConnectionHandler.flutterReactiveBle.subscribeToCharacteristic(characteristic).listen((data) {
-      if (data.isNotEmpty) {
-        receivedCharacteristicValue(characteristic: characteristic, values: data);
-      }
-    }, onError: (dynamic error) {
-      logger.info('Error with read measurement : $error');
-    });
-  }
-
   void receivedCharacteristicValue({required QualifiedCharacteristic characteristic, required List<int> values}) {
     if (characteristic.characteristicId == deviceModelNumberCharacteristic) {
       subscribeToMeasurement(temperatureService, temperatureMeasurement);
@@ -77,6 +66,17 @@ class CommunicationHandler {
         rawDataList += convertTimestampsToData(timestamps);
       }
     }
+  }
+
+  Future<void> subscribeToMeasurement(Uuid service, Uuid characteristicToNotify) async {
+    final characteristic = QualifiedCharacteristic(serviceId: service, characteristicId: characteristicToNotify, deviceId: deviceId);
+    bleConnectionHandler.flutterReactiveBle.subscribeToCharacteristic(characteristic).listen((data) {
+      if (data.isNotEmpty) {
+        receivedCharacteristicValue(characteristic: characteristic, values: data);
+      }
+    }, onError: (dynamic error) {
+      logger.info('Error with read measurement : $error');
+    });
   }
 
   List<String> convertBytesToTimestamps(List<int> data) {

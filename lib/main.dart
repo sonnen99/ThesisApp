@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:thesisapp/screens/ble_screen.dart';
 import 'package:thesisapp/screens/performance_screen.dart';
 import 'package:thesisapp/screens/profile_screen.dart';
 import 'package:thesisapp/screens/settings_screen.dart';
@@ -36,7 +37,7 @@ class _MyAppState extends State<MyApp> {
         TeamsScreen.id: (context) => TeamsScreen(),
         SettingsScreen.id: (context) => SettingsScreen(),
         ProfileScreen.id: (context) => ProfileScreen(),
-        PerformanceScreen.id: (context) => PerformanceScreen(),
+        BLEScreen.id: (context) => BLEScreen(),
       },
     );
   }

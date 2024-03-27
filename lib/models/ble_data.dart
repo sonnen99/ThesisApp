@@ -41,13 +41,16 @@ class BLEData {
     streamSubscription = null;
   }
 
-  void connectToDevice(DiscoveredDevice discoveredDevice, Function(bool) connectionStatus) async {
+  void connectToDevice(DiscoveredDevice discoveredDevice, Function(bool, DeviceConnectionState) connectionStatus) async {
     connection = flutterReactiveBle.connectToDevice(id: discoveredDevice.id).listen((connectionState) {
       logger.info("ConnectionState for device ${discoveredDevice.name} : ${connectionState.connectionState}");
       if (connectionState.connectionState == DeviceConnectionState.connected) {
-        connectionStatus(true);
+        connectionStatus(true, connectionState.connectionState);
       } else if (connectionState.connectionState == DeviceConnectionState.disconnected) {
-        connectionStatus(false);
+        connectionStatus(false, connectionState.connectionState);
+        Future.delayed(const Duration(seconds: 2), () {
+          connectToDevice(discoveredDevice, connectionStatus);
+        });
       }
     }, onError: (Object error) {
       logger.info("Connecting to device resulted in error $error");
