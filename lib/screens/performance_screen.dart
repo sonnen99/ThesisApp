@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_echarts/flutter_echarts.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:provider/provider.dart';
 import 'package:thesisapp/models/communication_handler.dart';
+import 'package:thesisapp/models/raw_data_handler.dart';
 import 'package:thesisapp/models/raw_data_list.dart';
 import 'package:thesisapp/widgets/ble_tile.dart';
-import 'package:real_time_chart/real_time_chart.dart';
+import 'package:thesisapp/widgets/pb_elevated_button.dart';
 
-import '../models/chart_handler.dart';
 import '../utilities/constants.dart';
 import '../widgets/pb_icon_button.dart';
 
@@ -44,6 +44,7 @@ class _PerformanceScreenState extends State<PerformanceScreen> {
           icon: Symbols.keyboard_arrow_left_rounded,
           size: 32.0,
           onPressed: () {
+            Provider.of<RawDataHandler>(context, listen: false).deleteAll();
             Navigator.pop(context);
           },
         ),
@@ -65,7 +66,6 @@ class _PerformanceScreenState extends State<PerformanceScreen> {
               leading: isConnected
                   ? const Icon(
                       Symbols.bluetooth_connected_rounded,
-                      size: 24.0,
                     )
                   : SpinKitWaveSpinner(
                       //dual ring, , , ripple, spinning lines, wave spinner
@@ -81,7 +81,53 @@ class _PerformanceScreenState extends State<PerformanceScreen> {
                       ),
                     ),
             ),
+
             RawDataList(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                PBElevatedButton(
+                  onPressed: () {
+                    Provider.of<RawDataHandler>(context, listen: false).deleteAll();
+                  },
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Symbols.restart_alt_rounded,
+                      ),
+                      SizedBox(
+                        width: 4.0,
+                      ),
+                      Text(
+                        'Reset',
+                        style: kButtonTextStyle,
+                      ),
+                    ],
+                  ),
+                ),
+                PBElevatedButton(
+                  onPressed: () {},
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Symbols.save_rounded,
+                      ),
+                      SizedBox(
+                        width: 4.0,
+                      ),
+                      Text(
+                        'Save',
+                        style: kButtonTextStyle,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
             // RealTimeGraph(stream: dataStream(),),
           ],
         ),

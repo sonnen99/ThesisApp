@@ -79,7 +79,7 @@ String getColor(BuildContext context, String color) {
           returnColor = const Color(0xFF395AAE);
           break;
         case 'green':
-          returnColor = const Color(0xFF026D36);
+          returnColor = const Color(0xFF156D30);
           break;
         case 'brown':
           returnColor = const Color(0xFF855300);
@@ -88,7 +88,7 @@ String getColor(BuildContext context, String color) {
           returnColor = const Color(0xFFA83156);
           break;
         case 'red':
-          returnColor = const Color(0xFFB42533);
+          returnColor = const Color(0xFFC00100);
           break;
         case 'turquoise':
           returnColor = const Color(0xFF00687B);
@@ -97,7 +97,10 @@ String getColor(BuildContext context, String color) {
           returnColor = const Color(0xFF6351A5);
           break;
         case 'yellow':
-          returnColor = const Color(0xFF646100);
+          returnColor = const Color(0xFFFBDB0F);
+          break;
+        case 'orange':
+          returnColor = const Color(0xFFE47000);
           break;
         default:
           returnColor = const Color(0xFFFFFFFF);
@@ -113,13 +116,13 @@ String getColor(BuildContext context, String color) {
           returnColor = const Color(0xFF66DE8B);
           break;
         case 'brown':
-          returnColor = const Color(0xFFFFB95F);
+          returnColor = const Color(0xFFC5Cf21);
           break;
         case 'pink':
           returnColor = const Color(0xFFFFB1C1);
           break;
         case 'red':
-          returnColor = const Color(0xFFFFB3B1);
+          returnColor = const Color(0xFFFF5540);
           break;
         case 'turquoise':
           returnColor = const Color(0xFF50D6F7);
@@ -128,7 +131,10 @@ String getColor(BuildContext context, String color) {
           returnColor = const Color(0xFFCCBEFF);
           break;
         case 'yellow':
-          returnColor = const Color(0xFFD0CB54);
+          returnColor = const Color(0xFFeffa4f);
+          break;
+        case 'orange':
+          returnColor = const Color(0xFFFFB688);
           break;
         default:
           returnColor = const Color(0xFF000000);
@@ -136,5 +142,30 @@ String getColor(BuildContext context, String color) {
       }
       break;
   }
+  return jsonEncode('#${returnColor.value.toRadixString(16).substring(2)}');
+}
+
+String getLineColor(BuildContext context, String color) {
+  Color returnColor = const Color(0xFFFFFFFF);
+
+      switch (color) {
+
+        case 'green':
+          returnColor = const Color(0xFF85D98F);
+          break;
+        case 'yellow':
+          returnColor = const Color(0xFFFBDB0F);
+          break;
+        case 'orange':
+          returnColor = const Color(0xFFFC7D02);
+          break;
+        case 'red':
+          returnColor = const Color(0xFFFD0100);
+          break;
+        default:
+          returnColor = const Color(0xFFFFFFFF);
+          break;
+      }
+
   return jsonEncode('#${returnColor.value.toRadixString(16).substring(2)}');
 }

@@ -27,7 +27,9 @@ class CommunicationHandler extends ChangeNotifier{
   int lastTimestamp = 0;
   int newTimestamp = 0;
   int nullTime = 0;
-  bool first = true;
+  int start = 0;
+  int end = 0;
+  bool area = false;
   final BuildContext context;
 
   CommunicationHandler(this.context) {
@@ -115,9 +117,9 @@ class CommunicationHandler extends ChangeNotifier{
           i += 3;
         } else if (timestampList[i] == 'm') {
           time = currentNumber;
-          if (first) {
+          if (Provider.of<RawDataHandler>(context, listen: false).isFirst()) {
             firstTimeStamp = int.parse(time);
-            first = false;
+            Provider.of<RawDataHandler>(context, listen: false).notFirst();
           }
           rawData.add(RawData(force: int.parse(force), timestamp: int.parse(time) - firstTimeStamp));
           break;
@@ -132,7 +134,9 @@ class CommunicationHandler extends ChangeNotifier{
     } else {
       newTimestamp = rawData.first.timestamp;
       nullTime = newTimestamp - lastTimestamp;
-      if (nullTime > 1) {
+      if (nullTime == 2){
+        rawData.insert(0, RawData(force: rawData.first.force, timestamp: 1 + lastTimestamp));
+      } else if (nullTime > 2) {
         for (int i = 1; i < nullTime; i++ ) {
           rawData.insert(i - 1, RawData(force: 0, timestamp: i + lastTimestamp));
         }
@@ -141,8 +145,21 @@ class CommunicationHandler extends ChangeNotifier{
     }
 
     for (RawData data in rawData) {
+      if(data.force != 0 && !area) {
+        start = data.timestamp;
+        area = true;
+      }
+      if (data.force == 0 && area) {
+        end = data.timestamp;
+        area = false;
+      }
       Provider.of<RawDataHandler>(context, listen: false).addData(data.force, data.timestamp);
       logger.info('Force: ${data.force}, Time: ${data.timestamp}');
+    }
+    if (start != 0 && end != 0) {
+      Provider.of<RawDataHandler>(context, listen: false).addArea(start, end);
+      start = 0;
+      end = 0;
     }
   }
 }

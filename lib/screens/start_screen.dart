@@ -43,8 +43,7 @@ class _StartScreenState extends State<StartScreen> {
               style: kTitleStyle,
             ),
           ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           floatingActionButton: FloatingActionButton(
             backgroundColor: Theme.of(context).colorScheme.primary,
             heroTag: 'performance',
@@ -79,22 +78,18 @@ class _StartScreenState extends State<StartScreen> {
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
                 child: AnimatedBottomNavigationBar(
+                  iconSize: 40,
                   icons: iconList,
                   activeIndex: currentIndex,
                   onTap: (value) {
                     setState(() {
                       currentIndex = value;
-                      _pageController.animateToPage(currentIndex,
-                          duration: const Duration(milliseconds: 800),
-                          curve: Curves.fastOutSlowIn);
+                      _pageController.animateToPage(currentIndex, duration: const Duration(milliseconds: 800), curve: Curves.fastOutSlowIn);
                     });
                   },
                   gapLocation: GapLocation.center,
                   notchSmoothness: NotchSmoothness.softEdge,
-                  backgroundColor: Theme.of(context)
-                      .colorScheme
-                      .surfaceVariant
-                      .withOpacity(0.2),
+                  backgroundColor: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.2),
                   activeColor: Theme.of(context).colorScheme.tertiary,
                   inactiveColor: Theme.of(context).colorScheme.onSurfaceVariant,
                   elevation: 4.0,

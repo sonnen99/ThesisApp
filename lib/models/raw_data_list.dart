@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_echarts/flutter_echarts.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +15,7 @@ class RawDataList extends StatelessWidget {
       builder: (context, value, child) {
         return Expanded(
           child: Echarts(
-            option: getLineOption(context, value.rawData),
+            option: getLineOption(context, value.rawData, value.markAreas),
           ),
         );
       },

@@ -72,6 +72,7 @@ String getBarSeries() {
 
 const String xValue = 'Date';
 const String xValue2 = 'Time';
+const String yValue = 'Force';
 
 String getBarOption(BuildContext context, List<Map<String, Object>> data1) {
   return '''{
@@ -213,48 +214,20 @@ String getBarOption(BuildContext context, List<Map<String, Object>> data1) {
           }''';
 }
 
-String getLineOption(BuildContext context, List<RawData> rawData) {
+String getLineOption(BuildContext context, List<RawData> rawData, List<List<Map<String, Object>>> markAreas) {
   List<List<Object>> data = [];
   data = convertRawdataToMap(rawData);
+
   return '''{
             color: [${getColor(context, 'blue')}],
             textStyle: {
               fontWeight: 400,
             },
-            // legend: {
-            //   data: ${jsonEncode(parameterList)},
-            //   type: 'scroll',
-            //   orient: 'horizontal',
-            //   pageButtonItemGap: 6,
-            //   pageButtonGap: 10,
-            //   pageButtonPosition: 'end',
-            //   pageIconColor: ${jsonEncode('#${Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2)}')},
-            //   pageIconInactiveColor: ${jsonEncode('#${Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2)}')},
-            //   pageIconSize: 14,
-            //   pageTextStyle: {
-            //     color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurfaceVariant.value.toRadixString(16).substring(2)}')},
-            //     fontWeight: 200,
-            //   },
-            //   animationDurationUpdate: 500,
-            //   bottom: '12.4%',
-            //   padding: [0,10,0,10],
-            //   itemGap: 10,
-            //   itemWidth: 16,
-            //   itemHeight: 16,
-            //   textStyle: {
-            //     color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurface.value.toRadixString(16).substring(2)}')},
-            //     fontWeight: 200,
-            //     fontSize: 14,
-            //   },
-            //   selectedMode: 'multiple',
-            //   inactiveColor: ${jsonEncode('#${Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2)}')},
-            //   icon: 'roundRect',
-            // },
             grid: {
               left: '5%',
               right: '7%',
               top: '5.1%',
-              height: '78%',
+              height: '80%',
               containLabel: true,          
             },
             toolbox: {
@@ -263,22 +236,68 @@ String getLineOption(BuildContext context, List<RawData> rawData) {
               left: 'right',
               top: 'center',
               feature: {
+                dataView: {
+                  iconStyle: {
+                    borderColor: ${jsonEncode('#${Theme.of(context).colorScheme.onSurfaceVariant.value.toRadixString(16).substring(2)}')},
+                    borderCap: 'round',
+                    borderJoin: 'round',
+                  },
+                  readOnly: 'true',
+                  backgroundColor: ${jsonEncode('#${Theme.of(context).colorScheme.surface.value.toRadixString(16).substring(2)}')},
+                  textareaColor: ${jsonEncode('#${Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2)}')},
+                  textareaBorderColor: ${jsonEncode('#${Theme.of(context).colorScheme.onSurface.value.toRadixString(16).substring(2)}')},
+                  textColor: ${jsonEncode('#${Theme.of(context).colorScheme.onSurface.value.toRadixString(16).substring(2)}')},
+                  buttonColor: ${jsonEncode('#${Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2)}')},
+                  buttonTextColor: ${jsonEncode('#${Theme.of(context).colorScheme.onPrimary.value.toRadixString(16).substring(2)}')},
+                  emphasis: {
+                    iconStyle: {
+                      borderColor: ${jsonEncode('#${Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2)}')},
+                      borderCap: 'round',
+                      borderJoin: 'round',
+                    },
+                  },
+                },
                 dataZoom: {
                   yAxisIndex: 'none',
+                  iconStyle: {
+                    borderColor: ${jsonEncode('#${Theme.of(context).colorScheme.onSurfaceVariant.value.toRadixString(16).substring(2)}')},
+                    borderCap: 'round',
+                    borderJoin: 'round',
+                  },
+                  emphasis: {
+                    iconStyle: {
+                      borderColor: ${jsonEncode('#${Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2)}')},
+                      borderCap: 'round',
+                      borderJoin: 'round',
+                    },
+                  },
                 },
-                restore: {},
+                restore: {
+                  iconStyle: {
+                    borderColor: ${jsonEncode('#${Theme.of(context).colorScheme.onSurfaceVariant.value.toRadixString(16).substring(2)}')},
+                    borderCap: 'round',
+                    borderJoin: 'round',
+                  },
+                  emphasis: {
+                    iconStyle: {
+                      borderColor: ${jsonEncode('#${Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2)}')},
+                      borderCap: 'round',
+                      borderJoin: 'round',
+                    },
+                  },
+                },
                 mark: {show: true},
               }
             },
             tooltip: {
               trigger: 'axis',
-              // position: 'bottom',
-              // backgroundColor: ${jsonEncode('#${Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2)}')},
-              // textStyle: {
-              //   fontWeight: 300,
-              //   fontSize: 16,
-              //   color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurfaceVariant.value.toRadixString(16).substring(2)}')},
-              // },
+              position: 'bottom',
+              backgroundColor: ${jsonEncode('#${Theme.of(context).colorScheme.surfaceVariant.value.toRadixString(16).substring(2)}')},
+              textStyle: {
+                fontWeight: 300,
+                fontSize: 16,
+                color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurfaceVariant.value.toRadixString(16).substring(2)}')},
+              },
             },
             animationEasing: 'elasticOut',
             animationDelayUpdate: function (idx) {
@@ -291,6 +310,9 @@ String getLineOption(BuildContext context, List<RawData> rawData) {
                 name: ${jsonEncode(xValue2)},
                 nameLocation: 'middle',
                 nameTextStyle: {
+                  color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurface.value.toRadixString(16).substring(2)}')},
+                  fontWeight: 300,
+                  fontSize: 14,
                   verticalAlign: 'top',
                   lineHeight: 32,
                 },
@@ -321,38 +343,156 @@ String getLineOption(BuildContext context, List<RawData> rawData) {
                 },
               }
             ],
-            yAxis: 
+            yAxis: {
+              type: 'value',
+              position: 'left',
+              scale: false,
+              name: ${jsonEncode(yValue)},
+              nameLocation: 'end',
+              nameTextStyle: {
+                  color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurface.value.toRadixString(16).substring(2)}')},
+                  fontWeight: 300,
+                  fontSize: 14,
+                  align: 'right',
+                  verticalAlign: 'bottom',
+                  padding: [0, 8, 0, 0],
+                },
+              minInterval: 1,
+              axisLine: {
+                show: false,
+                lineStyle: {
+                  cap: 'round',
+                  join: 'round',
+                 },               
+              },
+              axisTick: {
+                show: false,
+              },
+              splitLine: {
+                show: true,
+                lineStyle: {
+                  color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurfaceVariant.value.toRadixString(16).substring(2)}')},
+                  width: 0.7,
+                  cap: 'round',
+                  join: 'round',
+                },
+              },
+            },
+            dataZoom: [
               {
-                // type: 'value',
-                // position: 'left',
-                // scale: false,
-                // minInterval: 0.5,
-                // axisLine: {
-                //   show: false,
-                //   lineStyle: {
-                //     cap: 'round',
-                //     join: 'round',
-                //   },
-                // },
-                // axisTick: {
-                //   show: false,
-                // },
-                // splitLine: {
-                //   show: true,
-                //   lineStyle: {
-                //     color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurfaceVariant.value.toRadixString(16).substring(2)}')},
-                //     width: 0.7,
-                //     cap: 'round',
-                //     join: 'round',
-                //   },
-                // },
+                startValue: '0',
+              },
+              {
+                type: 'inside',
+              },
+              {
+                throttle: 50,
+              },
+            ],
+            visualMap: {
+              type: 'piecewise',
+              selectedMode: 'multiple',
+              inverse: false,
+              orient: 'horizontal',
+              bottom: '8%',
+              left: '5%',
+              pieces: [
+                {
+                  min: 0,
+                  max: 500,
+                  color: ${getColor(context, 'red')},
+                  
+                },
+                {
+                  min: 500,
+                  max: 1500,
+                  color: ${getColor(context, 'yellow')},
+                },
+                {
+                  min: 1500,
+                  max: 2500,
+                  color: ${getColor(context, 'green')},
+                },
+                {
+                  min: 2500,
+                  color: ${getColor(context, 'orange')},
+                },
+              ],
+              itemGap: 10,
+              itemWidth: 16,
+              itemHeight: 16,
+              textStyle: {
+                color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurface.value.toRadixString(16).substring(2)}')},
+                fontWeight: 200,
+                fontSize: 14,
+              },
+              icon: 'roundRect',
+              outOfRange: {
+                color: '#999'
               }
-            ,
+            },
             series: {
               type: 'line',
+              step: false,
+              lineStyle: {
+                width: 1.4,
+                cap: 'round',
+                join: 'round',
+              },
+              areaStyle: {
+                color: ${jsonEncode('#${Theme.of(context).colorScheme.tertiary.value.toRadixString(16).substring(2)}')},
+                opacity: 0.1,
+              },
+              smooth: true,
+              sampling: 'lttb',
+              symbol: 'none',
+              markArea: {
+                itemStyle: {
+                  color: ${jsonEncode('#${Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2)}')},
+                  opacity: 0.2,
+                },
+                label: {
+                  show: false,
+                  position: 'top',
+                  distance: 8,
+                  color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurfaceVariant.value.toRadixString(16).substring(2)}')},
+                  fontWeight: 300,
+                  fontSize: 13,
+                  align: 'center',
+                },
+                emphasis: {
+                  label: {
+                    show: true,
+                    position: 'top',
+                    distance: 8,
+                    color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurface.value.toRadixString(16).substring(2)}')},
+                    fontWeight: 300,
+                    fontSize: 15,
+                    align: 'center',
+                  },
+                  itemStyle: {
+                    color: ${jsonEncode('#${Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2)}')},
+                    opacity: 0.5,
+                  },
+                },
+                data: ${jsonEncode(markAreas)},
+              },
+              animation: true,
+              animationEasing: 'fastOutSlowIn',
+              animationDuration: 1000,
+              animationDelay: 0,
+              animationEasingUpdate: 'fastOutSlowIn',
+              animationDurationUpdate: 500,
+              animationDelayUpdate: function (idx) {
+                return idx * 5;
+              },
               data: ${jsonEncode(data)},
             },
           }''';
+}
+
+int getStartingValue() {
+  return 0;
 }
 
 List<List<Object>> convertRawdataToMap(List<RawData> rawData) {
