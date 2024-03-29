@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,11 +9,14 @@ import 'package:provider/provider.dart';
 import 'package:thesisapp/models/communication_handler.dart';
 import 'package:thesisapp/models/raw_data_handler.dart';
 import 'package:thesisapp/models/raw_data_list.dart';
+import 'package:thesisapp/screens/save_performance_screen.dart';
 import 'package:thesisapp/widgets/ble_tile.dart';
 import 'package:thesisapp/widgets/pb_elevated_button.dart';
 
 import '../utilities/constants.dart';
 import '../widgets/pb_icon_button.dart';
+
+final _firestore = FirebaseFirestore.instance;
 
 class PerformanceScreen extends StatefulWidget {
   static const String id = 'performance_screen';
@@ -26,6 +30,7 @@ class PerformanceScreen extends StatefulWidget {
 }
 
 class _PerformanceScreenState extends State<PerformanceScreen> {
+
   CommunicationHandler? communicationHandler;
   bool isConnected = false;
   DeviceConnectionState connectionState = DeviceConnectionState.connecting;
@@ -108,7 +113,19 @@ class _PerformanceScreenState extends State<PerformanceScreen> {
                   ),
                 ),
                 PBElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (context) => SingleChildScrollView(
+                        child: Container(
+                          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                          child: SavePerformanceScreen(),
+                        ),
+                      ),
+                    );
+
+                  },
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     mainAxisSize: MainAxisSize.min,
