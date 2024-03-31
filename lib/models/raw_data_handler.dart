@@ -46,6 +46,16 @@ class RawDataHandler extends ChangeNotifier {
     return UnmodifiableListView(_markAreas);
   }
 
+  Map<String, Map<String, dynamic>> convertForFirestore (String date) {
+    Map<String, dynamic> firestoreData = {};
+    Map<String, Map<String, dynamic>> mapForFirestore = {};
+    for (var element in _rawData) {
+      firestoreData[element.timestamp.toString()] = element.force;
+    }
+    mapForFirestore[date] = firestoreData;
+    return mapForFirestore;
+  }
+
   void deleteAll() {
     _markAreas.clear();
     _rawData.clear();

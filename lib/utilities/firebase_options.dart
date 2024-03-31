@@ -24,39 +24,39 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCIw6HKVLtAjLem9AWiQKjWxMLNx3BiVGk ',
-    appId: '1:1019029182920:android:bfe14c8d2ef1a0b62348fd',
-    messagingSenderId: '1019029182920',
-    projectId: 'flash-chat-e86ff',
+    apiKey: 'AIzaSyAIKqrZdE5yKyoioWx2Cn3vYPDEjixTtOY ',
+    appId: '1:1027919477795:android:494a84a7de20f5a3a14596',
+    messagingSenderId: '1027919477795',
+    projectId: 'thesisapp-a705d',
     authDomain: 'quickstart-flutter.firebaseapp.com',
-    storageBucket: 'com.JonathanSonnen.flash_chat',
+    storageBucket: 'com.example.thesisapp',
     measurementId: 'G-VZRVEJTBVW',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCIw6HKVLtAjLem9AWiQKjWxMLNx3BiVGk ',
-    appId: '1:1019029182920:android:bfe14c8d2ef1a0b62348fd',
-    messagingSenderId: '1019029182920',
-    projectId: 'flash-chat-e86ff',
-    storageBucket: 'com.JonathanSonnen.flash_chat',
+    apiKey: 'AIzaSyAIKqrZdE5yKyoioWx2Cn3vYPDEjixTtOY ',
+    appId: '1:1027919477795:android:494a84a7de20f5a3a14596',
+    messagingSenderId: '1027919477795',
+    projectId: 'thesisapp-a705d',
+    storageBucket: 'com.example.thesisapp',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCIw6HKVLtAjLem9AWiQKjWxMLNx3BiVGk ',
-    appId: '1:1019029182920:android:bfe14c8d2ef1a0b62348fd',
-    messagingSenderId: '1019029182920 ',
-    projectId: 'flash-chat-e86ff',
-    storageBucket: 'com.JonathanSonnen.flash_chat',
+    apiKey: 'AIzaSyAIKqrZdE5yKyoioWx2Cn3vYPDEjixTtOY ',
+    appId: '1:1027919477795:android:494a84a7de20f5a3a14596',
+    messagingSenderId: '1027919477795 ',
+    projectId: 'fthesisapp-a705d',
+    storageBucket: 'com.example.thesisapp',
     iosClientId: '879683392852-033rm5j7vc5spd6frsolbs4g8jqfd7jg.apps.googleusercontent.com',
     iosBundleId: 'com.example.authentication',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCIw6HKVLtAjLem9AWiQKjWxMLNx3BiVGk ',
-    appId: '1:1019029182920:android:bfe14c8d2ef1a0b62348fd',
-    messagingSenderId: '1019029182920 ',
-    projectId: 'quickstart-flutter',
-    storageBucket: 'com.JonathanSonnen.flash_chat',
+    apiKey: 'AIzaSyAIKqrZdE5yKyoioWx2Cn3vYPDEjixTtOY ',
+    appId: '1:1027919477795:android:494a84a7de20f5a3a14596',
+    messagingSenderId: '1027919477795 ',
+    projectId: 'thesisapp-a705d',
+    storageBucket: 'com.example.thesisapp',
     iosClientId: '879683392852-033rm5j7vc5spd6frsolbs4g8jqfd7jg.apps.googleusercontent.com',
     iosBundleId: 'com.example.authentication',
   );

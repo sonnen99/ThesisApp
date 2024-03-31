@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:thesisapp/screens/home_screen.dart';
 import 'package:thesisapp/screens/sensor_screen.dart';
@@ -19,10 +20,12 @@ class StartScreen extends StatefulWidget {
 class _StartScreenState extends State<StartScreen> {
   var currentIndex = 0;
   late PageController _pageController;
+  final _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
     super.initState();
+    loginUser();
     _pageController = PageController();
   }
 
@@ -101,5 +104,25 @@ class _StartScreenState extends State<StartScreen> {
         ),
       );
     });
+  }
+
+  Future<void> loginUser() async {
+    String email = 'sonnen@gmail.com';
+    String password = '123456';
+
+    try {
+      final newUser = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      print('Registered');
+    } catch (e) {
+      print(e);
+    }
+    try {
+      final user = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      print('Logged in');
+
+    } catch (e) {
+      print(e);
+    }
+
   }
 }

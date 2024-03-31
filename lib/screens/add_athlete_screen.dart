@@ -4,21 +4,31 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:provider/provider.dart';
 import 'package:thesisapp/models/raw_data_handler.dart';
 import 'package:thesisapp/models/raw_data.dart';
+import 'package:thesisapp/utilities/firebase_tags.dart';
 import '../utilities/constants.dart';
 import '../widgets/pb_elevated_button.dart';
 import '../widgets/pb_text_field.dart';
 import 'package:intl/intl.dart';
 
-
 final _firestore = FirebaseFirestore.instance;
 
-class SavePerformanceScreen extends StatefulWidget {
+class AddAthleteScreen extends StatefulWidget {
   @override
-  State<SavePerformanceScreen> createState() => _SavePerformanceScreenState();
+  State<AddAthleteScreen> createState() => _AddAthleteScreenState();
 }
 
-class _SavePerformanceScreenState extends State<SavePerformanceScreen> {
-  late String athleteName;
+class _AddAthleteScreenState extends State<AddAthleteScreen> {
+  late String firstName;
+  late String lastName;
+  final _firstController = TextEditingController();
+  final _secondController = TextEditingController();
+
+  @override
+  void dispose() {
+    _firstController.dispose();
+    _secondController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +47,7 @@ class _SavePerformanceScreenState extends State<SavePerformanceScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Save performance',
+              'Add athlete',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSecondaryContainer,
@@ -48,7 +58,31 @@ class _SavePerformanceScreenState extends State<SavePerformanceScreen> {
             const SizedBox(
               height: 20.0,
             ),
-            //TODO add spinner
+            PBTextField(
+              labelText: 'First name',
+              onChanged: (value) {
+                setState(() {
+                  _firstController;
+                });
+                firstName = value;
+                print(value);
+              },
+              textEditingController: _firstController,
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            PBTextField(
+              labelText: 'Last name',
+              onChanged: (value) {
+                setState(() {
+                  _secondController;
+                });
+                lastName = value;
+                print(value);
+              },
+              textEditingController: _secondController,
+            ),
             const SizedBox(
               height: 10.0,
             ),
@@ -66,11 +100,14 @@ class _SavePerformanceScreenState extends State<SavePerformanceScreen> {
                 ),
                 PBElevatedButton(
                   onPressed: () {
-                    final DateTime now = DateTime.now();
-                    final DateFormat formatter = DateFormat('yyyy-MM-dd hh:mm:ss');
-                    final String date = formatter.format(now);
-                    _firestore.collection('athletes').doc(athleteName.trim()).collection('performances').doc(date).set(Provider.of<RawDataHandler>(context, listen: false).convertForFirestore(date));
-                    Navigator.pop(context);
+                    if (_firstController.value.text.isNotEmpty && _secondController.value.text.isNotEmpty) {
+                      final athlete = <String, dynamic> {
+                        fbFirstname: firstName.trim(),
+                        fbLastname : lastName.trim(),
+                      };
+                      _firestore.collection(fbAthletes).add(athlete);
+                      Navigator.pop(context);
+                    }
                   },
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.end,

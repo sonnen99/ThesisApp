@@ -26,11 +26,11 @@ final iconList = <IconData>[
 
 final screenList = <String>[
   'Home',
-  'Teams',
+  'Team',
   'Settings',
   'Profile',
 ];
 
 const kTitleStyle = TextStyle(fontWeight: FontWeight.w100);
 
-const kButtonTextStyle = TextStyle(fontWeight: FontWeight.w100, fontSize: 18.0);
+const kButtonTextStyle = TextStyle(fontWeight: FontWeight.w100, fontSize: 18.0,);

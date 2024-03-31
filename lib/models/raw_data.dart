@@ -1,6 +1,6 @@
 class RawData {
   final int force;
-  late int timestamp;
+  final int timestamp;
 
   RawData({required this.force, required this.timestamp});
 }

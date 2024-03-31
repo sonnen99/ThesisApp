@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -16,7 +15,6 @@ import 'package:thesisapp/widgets/pb_elevated_button.dart';
 import '../utilities/constants.dart';
 import '../widgets/pb_icon_button.dart';
 
-final _firestore = FirebaseFirestore.instance;
 
 class PerformanceScreen extends StatefulWidget {
   static const String id = 'performance_screen';
