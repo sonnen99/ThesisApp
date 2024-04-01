@@ -5,13 +5,14 @@ import 'package:firebase_core/firebase_core.dart';
 class Athlete {
   final String firstName;
   final String lastName;
+  final String fbid;
 
-  Athlete({required this.firstName, required this.lastName});
+  Athlete({required this.firstName, required this.lastName, required this.fbid});
 
   factory Athlete.fromFirestore(
       DocumentSnapshot<Map<String, dynamic>> snapshot, SnapshotOptions? options,) {
       final data = snapshot.data();
-      return Athlete(firstName: data?['firstname'], lastName: data?['lastname']);
+      return Athlete(firstName: data?['firstname'], lastName: data?['lastname'], fbid: snapshot.id);
   }
 
   Map<String, dynamic> toFirestore() {

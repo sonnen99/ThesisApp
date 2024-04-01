@@ -69,7 +69,7 @@ class AthleteStream extends StatelessWidget {
           List<Athlete> athleteList = [];
           for (var athlete in snapshot.data!.docs) {
             athleteList.add(
-                Athlete(firstName: athlete[fbFirstname], lastName: athlete[fbLastname])
+                Athlete(firstName: athlete[fbFirstname], lastName: athlete[fbLastname], fbid: athlete.id)
             );
           }
           athleteList.sort((a, b) => a.firstName.compareTo(b.firstName));

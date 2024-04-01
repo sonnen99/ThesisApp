@@ -2,23 +2,52 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:provider/provider.dart';
+import 'package:thesisapp/models/athlete.dart';
 import 'package:thesisapp/models/raw_data_handler.dart';
-import 'package:thesisapp/models/raw_data.dart';
 import '../utilities/constants.dart';
 import '../widgets/pb_elevated_button.dart';
-import '../widgets/pb_text_field.dart';
 import 'package:intl/intl.dart';
 
 
 final _firestore = FirebaseFirestore.instance;
 
 class SavePerformanceScreen extends StatefulWidget {
+  final List<Athlete> athletes;
+  SavePerformanceScreen({required this.athletes});
   @override
   State<SavePerformanceScreen> createState() => _SavePerformanceScreenState();
 }
 
 class _SavePerformanceScreenState extends State<SavePerformanceScreen> {
-  late String athleteName;
+  
+  late String selectedAthlete = widget.athletes.first.fbid;
+
+  DropdownButton getDropdown() {
+
+    List<DropdownMenuItem<String>> list = [];
+    for (int i = 0; i < widget.athletes.length; i++) {
+      list.add(DropdownMenuItem(
+        value: widget.athletes[i].fbid,
+        child: Text('${widget.athletes[i].firstName} ${widget.athletes[i].lastName}'),
+      ));
+    }
+    return DropdownButton<String>(
+      value: selectedAthlete,
+      items: list,
+      onChanged: (value) {
+        setState(() {
+          selectedAthlete = value!;
+        });
+      },
+      style: kButtonTextStyle.copyWith(color: Theme.of(context).colorScheme.onSecondaryContainer),
+      borderRadius: BorderRadius.circular(10.0),
+      dropdownColor: Theme.of(context).colorScheme.secondaryContainer,
+      isExpanded: true,
+      isDense: true,
+    );
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +77,7 @@ class _SavePerformanceScreenState extends State<SavePerformanceScreen> {
             const SizedBox(
               height: 20.0,
             ),
-            //TODO add spinner
+            getDropdown(),
             const SizedBox(
               height: 10.0,
             ),
@@ -69,7 +98,7 @@ class _SavePerformanceScreenState extends State<SavePerformanceScreen> {
                     final DateTime now = DateTime.now();
                     final DateFormat formatter = DateFormat('yyyy-MM-dd hh:mm:ss');
                     final String date = formatter.format(now);
-                    _firestore.collection('athletes').doc(athleteName.trim()).collection('performances').doc(date).set(Provider.of<RawDataHandler>(context, listen: false).convertForFirestore(date));
+                    _firestore.collection('athletes').doc(selectedAthlete).collection('performances').doc(date).set(Provider.of<RawDataHandler>(context, listen: false).convertForFirestore(date));
                     Navigator.pop(context);
                   },
                   child: const Row(
