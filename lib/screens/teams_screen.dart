@@ -6,6 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:thesisapp/models/athlete.dart';
 import 'package:thesisapp/screens/add_athlete_screen.dart';
+import 'package:thesisapp/screens/athlete_screen.dart';
 import 'package:thesisapp/utilities/firebase_tags.dart';
 import '../widgets/ble_tile.dart';
 
@@ -89,13 +90,11 @@ class AthleteStream extends StatelessWidget {
                   child: BLETile(
                     bleTitle: '${athleteList[index].firstName} ${athleteList[index].lastName}',
                     onPress: () {
-                      //TODO add athleteScreen
-                      // DiscoveredDevice selectedDevice = discoveredDevices[index];
-                      // stopScan();
-                      // discoveredDevices.clear();
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      //   return PerformanceScreen(device: selectedDevice);
-                      // }));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        print(athleteList[index].fbid);
+                        print(athleteList[index].firstName);
+                        return AthleteScreen(athleteID: athleteList[index].fbid, athleteName: '${athleteList[index].firstName} ${athleteList[index].lastName}',);
+                      }));
                     },
                     isConnected: DeviceConnectionState.disconnecting,
                     leading: const Icon(

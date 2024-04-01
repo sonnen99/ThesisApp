@@ -7,6 +7,8 @@ class RawDataHandler extends ChangeNotifier {
   List<List<Map<String, Object>>> _markAreas = [];
   bool _lastTimestamp = true;
 
+
+
   int get dataCount {
     return _rawData.length;
   }
@@ -17,6 +19,47 @@ class RawDataHandler extends ChangeNotifier {
 
   void addData(int force, int time) {
     _rawData.add(RawData(force: force, timestamp: time));
+    bool start = true;
+    bool first = true;
+    int startValue = 0;
+    int endValue = 0;
+    _markAreas.clear();
+    for (var rawData in _rawData) {
+      if (rawData.force == 0 && start) {
+        if (first) {
+          endValue = rawData.timestamp;
+          int difference = startValue - endValue;
+          _markAreas.add([
+            {'name': '$difference sec', 'xAxis': startValue},
+            {'xAxis': endValue}
+          ]);
+          first = false;
+        }
+        startValue = rawData.timestamp;
+        int difference = startValue - endValue;
+        _markAreas.add([
+          {'name': '$difference sec', 'xAxis': startValue},
+          {'xAxis': endValue}
+        ]);
+        start = false;
+      }
+      if (rawData.force > 0 && !start) {
+        endValue = rawData.timestamp;
+        int difference = startValue - endValue;
+        _markAreas.add([
+          {'name': '$difference sec', 'xAxis': startValue},
+          {'xAxis': endValue}
+        ]);
+        start = true;
+      }
+    }
+    startValue = endValue;
+    endValue = _rawData.last.timestamp;
+    int difference = startValue - endValue;
+    _markAreas.add([
+      {'name': '$difference sec', 'xAxis': startValue},
+      {'xAxis': endValue}
+    ]);
     notifyListeners();
   }
 

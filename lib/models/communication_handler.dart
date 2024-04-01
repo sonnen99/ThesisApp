@@ -145,21 +145,9 @@ class CommunicationHandler extends ChangeNotifier{
     }
 
     for (RawData data in rawData) {
-      if(data.force != 0 && !area) {
-        start = data.timestamp;
-        area = true;
-      }
-      if (data.force == 0 && area) {
-        end = data.timestamp;
-        area = false;
-      }
       Provider.of<RawDataHandler>(context, listen: false).addData(data.force, data.timestamp);
       logger.info('Force: ${data.force}, Time: ${data.timestamp}');
     }
-    if (start != 0 && end != 0) {
-      Provider.of<RawDataHandler>(context, listen: false).addArea(start, end);
-      start = 0;
-      end = 0;
-    }
+
   }
 }

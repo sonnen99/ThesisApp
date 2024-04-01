@@ -5,7 +5,7 @@ import 'package:thesisapp/models/raw_data.dart';
 import 'package:thesisapp/models/raw_data_handler.dart';
 import 'package:thesisapp/screens/sensor_screen.dart';
 import 'package:thesisapp/screens/performance_screen.dart';
-import 'package:thesisapp/screens/profile_screen.dart';
+import 'package:thesisapp/screens/bar_chart_screen.dart';
 import 'package:thesisapp/screens/settings_screen.dart';
 import 'package:thesisapp/screens/start_screen.dart';
 import 'package:thesisapp/screens/teams_screen.dart';
@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
           HomeScreen.id: (context) => HomeScreen(),
           TeamsScreen.id: (context) => TeamsScreen(),
           SettingsScreen.id: (context) => SettingsScreen(),
-          ProfileScreen.id: (context) => ProfileScreen(),
+          BarChartScreen.id: (context) => BarChartScreen(),
           SensorScreen.id: (context) => SensorScreen(),
         },
       ),

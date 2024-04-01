@@ -449,7 +449,7 @@ String getLineOption(BuildContext context, List<RawData> rawData, List<List<Map<
               markArea: {
                 itemStyle: {
                   color: ${jsonEncode('#${Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2)}')},
-                  opacity: 0.2,
+                  opacity: 0.1,
                 },
                 label: {
                   show: false,
@@ -472,7 +472,7 @@ String getLineOption(BuildContext context, List<RawData> rawData, List<List<Map<
                   },
                   itemStyle: {
                     color: ${jsonEncode('#${Theme.of(context).colorScheme.primary.value.toRadixString(16).substring(2)}')},
-                    opacity: 0.5,
+                    opacity: 0.3,
                   },
                 },
                 data: ${jsonEncode(markAreas)},

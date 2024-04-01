@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:thesisapp/screens/home_screen.dart';
-import 'package:thesisapp/screens/sensor_screen.dart';
 import 'package:thesisapp/screens/profile_screen.dart';
+import 'package:thesisapp/screens/sensor_screen.dart';
+import 'package:thesisapp/screens/bar_chart_screen.dart';
 import 'package:thesisapp/screens/settings_screen.dart';
 import 'package:thesisapp/screens/teams_screen.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';

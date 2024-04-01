@@ -46,7 +46,7 @@ class _PerformanceScreenState extends State<PerformanceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: PBButton(
+        leading: PBIconButton(
           icon: Symbols.keyboard_arrow_left_rounded,
           size: 32.0,
           onPressed: () {

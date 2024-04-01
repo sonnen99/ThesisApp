@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class PBButton extends StatelessWidget {
+class PBIconButton extends StatelessWidget {
   final IconData icon;
   final void Function() onPressed;
   final double size;
 
-  PBButton({required this.icon, required this.onPressed, required this.size});
+  PBIconButton({required this.icon, required this.onPressed, required this.size});
 
   @override
   Widget build(BuildContext context) {

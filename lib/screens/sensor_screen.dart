@@ -32,7 +32,7 @@ class _SensorScreenState extends State<SensorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: PBButton(
+          leading: PBIconButton(
             icon: Symbols.keyboard_arrow_left_rounded,
             size: 32.0,
             onPressed: () {
@@ -81,7 +81,7 @@ class _SensorScreenState extends State<SensorScreen> {
                         color: Theme.of(context).colorScheme.primary,
                         size: 120.0,
                         duration: Duration(milliseconds: 1400),
-                        child: PBButton(
+                        child: PBIconButton(
                             icon: Symbols.bluetooth_searching_rounded,
                             onPressed: () {
                               isScanStarted ? stopScan() : startScan();
@@ -90,7 +90,7 @@ class _SensorScreenState extends State<SensorScreen> {
                       )
                     : Padding(
                       padding: const EdgeInsets.only(bottom: 18.0),
-                      child: PBButton(
+                      child: PBIconButton(
                           icon: Symbols.bluetooth_rounded,
                           onPressed: () {
                             isScanStarted ? stopScan() : startScan();

@@ -6,3 +6,6 @@ const String fbAthletes = 'athletes';
 const String fbFirstname = 'firstname';
 const String fbLastname = 'lastname';
 
+//Performance
+const String fbPerformances = 'performances';
+
