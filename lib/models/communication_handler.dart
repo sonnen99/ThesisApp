@@ -10,7 +10,7 @@ import 'package:sprintf/sprintf.dart';
 import 'package:thesisapp/models/raw_data.dart';
 import 'package:thesisapp/models/raw_data_handler.dart';
 
-class CommunicationHandler extends ChangeNotifier{
+class CommunicationHandler extends ChangeNotifier {
   SimpleLogger logger = SimpleLogger();
   late final BLEConnection bleConnectionHandler;
 
@@ -35,7 +35,6 @@ class CommunicationHandler extends ChangeNotifier{
   CommunicationHandler(this.context) {
     bleConnectionHandler = BLEConnection();
   }
-
 
   void startScan(Function(DiscoveredDevice) scanDevice) {
     bleConnectionHandler.startBluetoothScan((discoveredDevice) => {scanDevice(discoveredDevice)});
@@ -100,53 +99,52 @@ class CommunicationHandler extends ChangeNotifier{
     return timestamps;
   }
 
-  void convertTimestampsToData(List<String> timestamps) {
+  void convertTimestampsToData(List<String> timestamps) {                                             // triggered when data is available
     List<RawData> rawData = [];
-    for (String timestamp in timestamps) {
+    for (String timestamp in timestamps) {                                                            // for every timestamp in the new data
       String force = '';
       String time = '';
       String currentNumber = '';
       var timestampList = [];
-      if (timestamp.contains('at') && !timestamp[0].contains(' ') && !timestamp[0].contains('a')) {
+      if (timestamp.contains('at') && !timestamp[0].contains(' ') && !timestamp[0].contains('a')) {   // filter incomplete data
         timestampList = timestamp.split('');
       }
-      for (int i = 0; i < timestampList.length; i++) {
+      for (int i = 0; i < timestampList.length; i++) {                                                // move through every character of one timestamp
         if (timestampList[i] == ' ') {
-          force = currentNumber;
+          force = currentNumber;                                                                      // save the force of the timestamp
           currentNumber = '';
           i += 3;
         } else if (timestampList[i] == 'm') {
-          time = currentNumber;
+          time = currentNumber;                                                                       // save the time of the timestamp
           if (Provider.of<RawDataHandler>(context, listen: false).isFirst()) {
-            firstTimeStamp = int.parse(time);
+            firstTimeStamp = int.parse(time);                                                         // record first timestamp for 0 adaption
             Provider.of<RawDataHandler>(context, listen: false).notFirst();
           }
-          rawData.add(RawData(force: int.parse(force), timestamp: int.parse(time) - firstTimeStamp));
+          rawData.add(RawData(force: int.parse(force), timestamp: int.parse(time) - firstTimeStamp)); // add force and time to list, next item
           break;
         } else {
-          currentNumber += timestampList[i];
+          currentNumber += timestampList[i];                                                          // add character to the current force or time
         }
       }
     }
 
     if (lastTimestamp == 0) {
-      lastTimestamp = rawData.last.timestamp;
+      lastTimestamp = rawData.last.timestamp;                                                         // record last timestamp of first data block
     } else {
       newTimestamp = rawData.first.timestamp;
       nullTime = newTimestamp - lastTimestamp;
-      if (nullTime == 2){
-        rawData.insert(0, RawData(force: rawData.first.force, timestamp: 1 + lastTimestamp));
-      } else if (nullTime > 2) {
-        for (int i = 1; i < nullTime; i++ ) {
+      if (nullTime == 2) {                                                                            // when gap between timestamps is 1
+        rawData.insert(0, RawData(force: rawData.first.force, timestamp: 1 + lastTimestamp));         // fill incomplete data points
+      } else if (nullTime > 2) {                                                                      // fill data with 0 when sensor is above the water
+        for (int i = 1; i < nullTime; i++) {
           rawData.insert(i - 1, RawData(force: 0, timestamp: i + lastTimestamp));
         }
       }
-      lastTimestamp = rawData.last.timestamp;
+      lastTimestamp = rawData.last.timestamp;                                                         // new last timestamp of the current data block
     }
 
     for (RawData data in rawData) {
-      Provider.of<RawDataHandler>(context, listen: false).addData(data.force, data.timestamp);
-      logger.info('Force: ${data.force}, Time: ${data.timestamp}');
+      Provider.of<RawDataHandler>(context, listen: false).addData(data.force, data.timestamp);        // add all new data points to the graph
     }
 
   }

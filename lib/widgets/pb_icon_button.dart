@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class PBIconButton extends StatelessWidget {
   final IconData icon;
-  final void Function() onPressed;
+  final void Function()? onPressed;
   final double size;
 
   PBIconButton({required this.icon, required this.onPressed, required this.size});
@@ -23,6 +23,8 @@ class PBIconButton extends StatelessWidget {
             color: Theme.of(context).colorScheme.onPrimary,
             size: size,
           ),
+          disabledColor: Theme.of(context).colorScheme.surfaceVariant,
+          disabledElevation: 0,
         ),
       ),
     );

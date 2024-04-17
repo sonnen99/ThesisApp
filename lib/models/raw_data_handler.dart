@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'raw_data.dart';
 
@@ -17,8 +18,8 @@ class RawDataHandler extends ChangeNotifier {
     return _markAreas.length;
   }
 
-  void addData(int force, int time) {
-    _rawData.add(RawData(force: force, timestamp: time));
+  void addData(int force, int time) {                          // function is triggered for every data point available
+    _rawData.add(RawData(force: force, timestamp: time));      // add data to the list
     bool start = true;
     bool first = true;
     int startValue = 0;
@@ -28,24 +29,26 @@ class RawDataHandler extends ChangeNotifier {
       if (rawData.force == 0 && start) {
         if (first) {
           endValue = rawData.timestamp;
-          int difference = startValue - endValue;
+          int difference = (endValue - startValue) * 10;
           _markAreas.add([
             {'name': '$difference sec', 'xAxis': startValue},
             {'xAxis': endValue}
           ]);
           first = false;
+          startValue = rawData.timestamp;
+        } else {
+          startValue = rawData.timestamp;
+          int difference = (startValue - endValue) * 10;
+          _markAreas.add([
+            {'name': '$difference sec', 'xAxis': startValue},
+            {'xAxis': endValue}
+          ]);
         }
-        startValue = rawData.timestamp;
-        int difference = startValue - endValue;
-        _markAreas.add([
-          {'name': '$difference sec', 'xAxis': startValue},
-          {'xAxis': endValue}
-        ]);
         start = false;
       }
       if (rawData.force > 0 && !start) {
         endValue = rawData.timestamp;
-        int difference = startValue - endValue;
+        int difference = (endValue - startValue) * 10;
         _markAreas.add([
           {'name': '$difference sec', 'xAxis': startValue},
           {'xAxis': endValue}
@@ -55,7 +58,7 @@ class RawDataHandler extends ChangeNotifier {
     }
     startValue = endValue;
     endValue = _rawData.last.timestamp;
-    int difference = startValue - endValue;
+    int difference = (endValue - startValue) * 10;
     _markAreas.add([
       {'name': '$difference sec', 'xAxis': startValue},
       {'xAxis': endValue}

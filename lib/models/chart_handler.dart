@@ -216,7 +216,9 @@ String getBarOption(BuildContext context, List<Map<String, Object>> data1) {
 
 String getLineOption(BuildContext context, List<RawData> rawData, List<List<Map<String, Object>>> markAreas) {
   List<List<Object>> data = [];
+  List<List<Object>> averageForce = [];
   data = convertRawdataToMap(rawData);
+  averageForce = getAverageForce(rawData);
 
   return '''{
             color: [${getColor(context, 'blue')}],
@@ -431,7 +433,8 @@ String getLineOption(BuildContext context, List<RawData> rawData, List<List<Map<
                 color: '#999'
               }
             },
-            series: {
+            series: [
+            {
               type: 'line',
               step: false,
               lineStyle: {
@@ -488,6 +491,43 @@ String getLineOption(BuildContext context, List<RawData> rawData, List<List<Map<
               },
               data: ${jsonEncode(data)},
             },
+            {
+              type: 'line',
+              name: 'Average force',
+              step: false,
+              lineStyle: {
+                color: ${jsonEncode('#${Theme.of(context).colorScheme.primaryContainer.value.toRadixString(16).substring(2)}')},
+                width: 2.5,
+                cap: 'round',
+                join: 'round',
+              },
+              smooth: true,
+              sampling: 'lttb',
+              symbol: 'none',
+              endLabel: {
+                show: true,
+                formatter: function (params) {
+                  return params.seriesName + ': ' + params.value[1] ;
+                },
+                offset: [-14, -4],
+                color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurface.value.toRadixString(16).substring(2)}')},
+                fontWeight: 300,
+                fontSize: 14,
+                align: 'right',
+                verticalAlign: 'bottom',
+              },
+              animation: true,
+              animationEasing: 'fastOutSlowIn',
+              animationDuration: 1000,
+              animationDelay: 0,
+              animationEasingUpdate: 'fastOutSlowIn',
+              animationDurationUpdate: 500,
+              animationDelayUpdate: function (idx) {
+                return idx * 5;
+              },
+              data: ${jsonEncode(averageForce)},
+            },
+            ],
           }''';
 }
 
@@ -501,6 +541,25 @@ List<List<Object>> convertRawdataToMap(List<RawData> rawData) {
     newData.add([rawDataPoint.timestamp.toString(), rawDataPoint.force]);
   }
   return newData;
+}
+
+List<List<Object>> getAverageForce(List<RawData> rawData) {
+  List<List<Object>> averageData = [];
+  var i = 0;
+  var totalForce = 0;
+  double averageForce = 0;
+  if (rawData.isNotEmpty) {
+    for (RawData rawDataPoint in rawData) {
+      if (rawDataPoint.force != 0) {
+        totalForce += rawDataPoint.force;
+        i++;
+      }
+    }
+    averageForce = (totalForce / i).roundToDouble();
+    averageData.add(['0', averageForce]);
+    averageData.add([rawData.last.timestamp.toString(), averageForce]);
+  }
+  return averageData;
 }
 
 String getIndicator() {

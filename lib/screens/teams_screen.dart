@@ -80,13 +80,13 @@ class AthleteStream extends StatelessWidget {
               itemCount: athleteList.length,
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
-                  //TODO maybe uncomment
-                  // onLongPress: () {
-                  //   _firestore.collection(fbAthletes).where(fbFirstname, isEqualTo: athleteList[index].firstName).where(fbLastname, isEqualTo: athleteList[index].lastName).get().then((doc) {
-                  //     String id = doc.docs[0].id;
-                  //     _firestore.collection(fbAthletes).doc(id).delete();
-                  //   });
-                  // },
+                  //TODO Are you sure you want to delete?
+                  onLongPress: () {
+                    _firestore.collection(fbAthletes).where(fbFirstname, isEqualTo: athleteList[index].firstName).where(fbLastname, isEqualTo: athleteList[index].lastName).get().then((doc) {
+                      String id = doc.docs[0].id;
+                      _firestore.collection(fbAthletes).doc(id).delete();
+                    });
+                  },
                   child: BLETile(
                     bleTitle: '${athleteList[index].firstName} ${athleteList[index].lastName}',
                     onPress: () {
