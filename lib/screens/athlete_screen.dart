@@ -1,7 +1,9 @@
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_echarts/flutter_echarts.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -49,6 +51,9 @@ class _AthleteScreenState extends State<AthleteScreen> {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          PBIconButton(icon: Symbols.note_rounded, onPressed: () {}, size: 32.0),
+        ],
         title: Text(
           widget.athleteName,
           style: kTitleStyle,
@@ -58,6 +63,7 @@ class _AthleteScreenState extends State<AthleteScreen> {
         padding: const EdgeInsets.all(10.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             getParameters(),
             buildChart(),
@@ -254,10 +260,11 @@ class _AthleteScreenState extends State<AthleteScreen> {
     }
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Time/stroke: $strokeTime sec'),
         Text('Strokes/min: $strokeMin'),
-        Text('Above/under water distribution: $distribution'),
+        Text('Above/under: $distribution'),
       ],
     );
   }

@@ -32,14 +32,17 @@ class _SensorScreenState extends State<SensorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: PBIconButton(
-            icon: Symbols.keyboard_arrow_left_rounded,
-            size: 32.0,
-            onPressed: () {
-              Navigator.pop(context);
-            },
+          leading: Hero(
+            tag: 'performance',
+            child: PBIconButton(
+              icon: Symbols.keyboard_arrow_left_rounded,
+              size: 32.0,
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
           ),
-          title: Text(
+          title: const Text(
             'Performance collection',
             style: kTitleStyle,
           ),
