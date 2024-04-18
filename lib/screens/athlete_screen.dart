@@ -1,17 +1,16 @@
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_echarts/flutter_echarts.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:thesisapp/models/chart_handler.dart';
 import 'package:thesisapp/models/raw_data.dart';
+import 'package:thesisapp/screens/add_comment_screen.dart';
 import 'package:thesisapp/utilities/firebase_tags.dart';
-
-import '../models/raw_data_list.dart';
+import 'package:thesisapp/widgets/pb_delete_alert.dart';
 import '../utilities/constants.dart';
 import '../widgets/pb_icon_button.dart';
 
@@ -30,6 +29,7 @@ class AthleteScreen extends StatefulWidget {
 class _AthleteScreenState extends State<AthleteScreen> {
   List<Map<String, dynamic>> performances = [];
   List<String> dates = [];
+  List<String> comments = [];
   int selectedPerformance = 0;
   bool forwardDisabled = true;
   bool backwardDisabled = false;
@@ -52,7 +52,40 @@ class _AthleteScreenState extends State<AthleteScreen> {
           },
         ),
         actions: [
-          PBIconButton(icon: Symbols.note_rounded, onPressed: () {}, size: 32.0),
+          MaterialButton(
+            elevation: 0,
+            shape: const CircleBorder(),
+            onPressed: () async {
+              final result = await showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (context) => SingleChildScrollView(
+                  child: Container(
+                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: AddCommentScreen(
+                      athleteID: widget.athleteID,
+                      date: dates[selectedPerformance],
+                      comment: comments[selectedPerformance],
+                    ),
+                  ),
+                ),
+              );
+              if (result != null) {
+                setState(() {
+                  comments[selectedPerformance] = result;
+                });
+              }
+            },
+            padding: const EdgeInsets.all(6.0),
+            color: Colors.transparent,
+            disabledColor: Theme.of(context).colorScheme.surfaceVariant,
+            disabledElevation: 0,
+            child: Icon(
+              Symbols.maps_ugc_rounded,
+              color: Theme.of(context).colorScheme.primary,
+              size: 32.0,
+            ),
+          ),
         ],
         title: Text(
           widget.athleteName,
@@ -65,7 +98,59 @@ class _AthleteScreenState extends State<AthleteScreen> {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                comments.isNotEmpty && comments[selectedPerformance].isNotEmpty && comments[selectedPerformance] != ''
+                    ? Expanded(
+                        child: Text(
+                           'Note: ${comments[selectedPerformance]}',
+                          textAlign: TextAlign.start,
+                        ),
+                      )
+                    : const SizedBox(
+                        height: 1.0,
+                      ),
+                comments.isNotEmpty && comments[selectedPerformance].isNotEmpty && comments[selectedPerformance] != ''
+                    ? MaterialButton(
+                        elevation: 0,
+                        shape: const CircleBorder(),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              barrierDismissible: true,
+                              builder: (_) => PBDeleteAlert(
+                                  title: 'Delete comment?',
+                                  onYes: () {
+                                    final delete = <String, dynamic>{
+                                      'comment': FieldValue.delete(),
+                                    };
+                                    _firestore.collection(fbAthletes).doc(widget.athleteID).collection(fbPerformances).doc(dates[selectedPerformance]).update(delete);
+                                    setState(() {
+                                      comments[selectedPerformance] = '';
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                  content: comments[selectedPerformance]));
+                        },
+                        padding: const EdgeInsets.all(6.0),
+                        color: Colors.transparent,
+                        disabledColor: Theme.of(context).colorScheme.surfaceVariant,
+                        disabledElevation: 0,
+                        child: Icon(
+                          Symbols.scan_delete_rounded,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 24.0,
+                        ),
+                      )
+                    : const SizedBox(
+                        height: 1.0,
+                      ),
+              ],
+            ),
             getParameters(),
+            const SizedBox(height: 4.0,),
             buildChart(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -115,10 +200,20 @@ class _AthleteScreenState extends State<AthleteScreen> {
         for (var snapshot in querySnapshot.docs) {
           performances.add(snapshot.data()[snapshot.id]);
           dates.add(snapshot.id);
+          if (snapshot.data()[fbComment] == null) {
+            comments.add('');
+          } else {
+            comments.add(snapshot.data()[fbComment]);
+          }
         }
         setState(() {
+          if (performances.length == 1) {
+            forwardDisabled = true;
+            backwardDisabled = true;
+          }
           performances;
           dates;
+          comments;
           selectedPerformance = performances.length - 1;
         });
       }
@@ -268,4 +363,5 @@ class _AthleteScreenState extends State<AthleteScreen> {
       ],
     );
   }
+
 }

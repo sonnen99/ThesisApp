@@ -8,4 +8,5 @@ const String fbLastname = 'lastname';
 
 //Performance
 const String fbPerformances = 'performances';
+const String fbComment = 'comment';
 

@@ -34,3 +34,5 @@ final screenList = <String>[
 const kTitleStyle = TextStyle(fontWeight: FontWeight.w100);
 
 const kButtonTextStyle = TextStyle(fontWeight: FontWeight.w100, fontSize: 18.0,);
+
+const kErrorTextStyle = TextStyle(fontWeight: FontWeight.w100, fontSize: 20.0);

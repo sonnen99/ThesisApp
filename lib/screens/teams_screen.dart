@@ -8,6 +8,8 @@ import 'package:thesisapp/models/athlete.dart';
 import 'package:thesisapp/screens/add_athlete_screen.dart';
 import 'package:thesisapp/screens/athlete_screen.dart';
 import 'package:thesisapp/utilities/firebase_tags.dart';
+import 'package:thesisapp/widgets/pb_delete_alert.dart';
+import '../utilities/constants.dart';
 import '../widgets/ble_tile.dart';
 
 final _firestore = FirebaseFirestore.instance;
@@ -69,9 +71,7 @@ class AthleteStream extends StatelessWidget {
         if (snapshot.hasData) {
           List<Athlete> athleteList = [];
           for (var athlete in snapshot.data!.docs) {
-            athleteList.add(
-                Athlete(firstName: athlete[fbFirstname], lastName: athlete[fbLastname], fbid: athlete.id)
-            );
+            athleteList.add(Athlete(firstName: athlete[fbFirstname], lastName: athlete[fbLastname], fbid: athlete.id));
           }
           athleteList.sort((a, b) => a.firstName.compareTo(b.firstName));
           return Expanded(
@@ -80,12 +80,34 @@ class AthleteStream extends StatelessWidget {
               itemCount: athleteList.length,
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
-                  //TODO Are you sure you want to delete?
                   onLongPress: () {
-                    _firestore.collection(fbAthletes).where(fbFirstname, isEqualTo: athleteList[index].firstName).where(fbLastname, isEqualTo: athleteList[index].lastName).get().then((doc) {
-                      String id = doc.docs[0].id;
-                      _firestore.collection(fbAthletes).doc(id).delete();
-                    });
+                    showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (_) => PBDeleteAlert(
+                        title: 'Delete athlete?',
+                        content: '${athleteList[index].firstName} ${athleteList[index].lastName}',
+                        onYes: () {
+                          _firestore
+                              .collection(fbAthletes)
+                              .where(fbFirstname, isEqualTo: athleteList[index].firstName)
+                              .where(fbLastname, isEqualTo: athleteList[index].lastName)
+                              .get()
+                              .then((doc) {
+                            String id = doc.docs[0].id;
+                            _firestore.collection(fbAthletes).doc(id).collection(fbPerformances).get().then((value) {
+                              if (value.docs.isNotEmpty) {
+                                for (var doc in value.docs) {
+                                  _firestore.collection(fbAthletes).doc(id).collection(fbPerformances).doc(doc.id).delete();
+                                }
+                              }
+                            });
+                            _firestore.collection(fbAthletes).doc(id).delete();
+                          });
+                          Navigator.pop(context);
+                        },
+                      ),
+                    );
                   },
                   child: BLETile(
                     bleTitle: '${athleteList[index].firstName} ${athleteList[index].lastName}',
@@ -93,7 +115,10 @@ class AthleteStream extends StatelessWidget {
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
                         print(athleteList[index].fbid);
                         print(athleteList[index].firstName);
-                        return AthleteScreen(athleteID: athleteList[index].fbid, athleteName: '${athleteList[index].firstName} ${athleteList[index].lastName}',);
+                        return AthleteScreen(
+                          athleteID: athleteList[index].fbid,
+                          athleteName: '${athleteList[index].firstName} ${athleteList[index].lastName}',
+                        );
                       }));
                     },
                     isConnected: DeviceConnectionState.disconnecting,
