@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
-import 'package:material_symbols_icons/symbols.dart';
-import 'package:thesisapp/utilities/color_schemes.g.dart';
 
 class BLETile extends StatelessWidget {
   final String bleTitle;
@@ -16,13 +14,28 @@ class BLETile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: ListTile(
-        title: Text(
-          bleTitle,
-          style: TextStyle(
-            fontWeight: FontWeight.w300,
-            fontSize: 20.0,
-            color: getTextColor(context, isConnected),
-          ),
+        title: Row(
+          children: [
+            Text(
+              bleTitle.substring(0, 10),
+              style: TextStyle(
+                fontWeight: FontWeight.w300,
+                fontSize: 20.0,
+                color: getTextColor(context, isConnected),
+              ),
+            ),
+            const SizedBox(
+              width: 20.0,
+            ),
+            Text(
+              getConnectionText(isConnected),
+              style: TextStyle(
+                fontWeight: FontWeight.w300,
+                fontSize: 20.0,
+                color: getTextColor(context, isConnected),
+              ),
+            ),
+          ],
         ),
         onTap: onPress,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
@@ -31,6 +44,17 @@ class BLETile extends StatelessWidget {
         leading: leading,
       ),
     );
+  }
+
+  String getConnectionText(DeviceConnectionState connectionState) {
+    switch (connectionState) {
+      case DeviceConnectionState.connected:
+        return 'Connected';
+      case DeviceConnectionState.disconnected:
+        return 'Disconnected';
+      default:
+        return 'Connecting';
+    }
   }
 
   Color getConnectionStateColor(BuildContext context, DeviceConnectionState connectionState) {

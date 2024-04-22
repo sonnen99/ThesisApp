@@ -9,9 +9,8 @@ import 'package:simple_logger/simple_logger.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:thesisapp/screens/performance_screen.dart';
 import 'package:thesisapp/utilities/constants.dart';
-import 'package:thesisapp/widgets/ble_tile.dart';
-import 'package:thesisapp/widgets/pb_elevated_button.dart';
 import 'package:thesisapp/widgets/pb_icon_button.dart';
+import 'package:thesisapp/widgets/pb_list_tile.dart';
 
 class SensorScreen extends StatefulWidget {
   static const String id = 'ble_screen';
@@ -56,7 +55,7 @@ class _SensorScreenState extends State<SensorScreen> {
                     padding: const EdgeInsets.all(10),
                     itemCount: discoveredDevices.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return BLETile(
+                      return PBListTile(
                         bleTitle: discoveredDevices[index].name,
                         onPress: () {
                           DiscoveredDevice selectedDevice = discoveredDevices[index];
@@ -66,7 +65,6 @@ class _SensorScreenState extends State<SensorScreen> {
                             return PerformanceScreen(device: selectedDevice);
                           }));
                         },
-                        isConnected: DeviceConnectionState.disconnecting,
                         leading: const Icon(
                           Symbols.bluetooth,
                           size: 24.0,

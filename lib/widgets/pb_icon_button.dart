@@ -16,13 +16,13 @@ class PBIconButton extends StatelessWidget {
         onPressed: onPressed,
         padding: const EdgeInsets.all(4.0),
         color: Theme.of(context).colorScheme.primary,
+        disabledColor: Theme.of(context).colorScheme.surfaceVariant,
+        disabledElevation: 0,
         child: Icon(
           icon,
           color: Theme.of(context).colorScheme.onPrimary,
           size: size,
         ),
-        disabledColor: Theme.of(context).colorScheme.surfaceVariant,
-        disabledElevation: 0,
       ),
     );
   }

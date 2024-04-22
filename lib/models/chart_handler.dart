@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:simple_logger/simple_logger.dart';
 import 'package:thesisapp/models/parameter.dart';
 import 'package:thesisapp/models/parameter_radar.dart';
 import 'package:thesisapp/models/raw_data.dart';
@@ -71,8 +70,8 @@ String getBarSeries() {
 }
 
 const String xValue = 'Date';
-const String xValue2 = 'Time';
-const String yValue = 'Force';
+const String xValue2 = 'Time [ms/10]';
+const String yValue = 'Force [N]';
 
 String getBarOption(BuildContext context, List<Map<String, Object>> data1) {
   return '''{
@@ -214,7 +213,7 @@ String getBarOption(BuildContext context, List<Map<String, Object>> data1) {
           }''';
 }
 
-String getLineOption(BuildContext context, List<RawData> rawData, List<List<Map<String, Object>>> markAreas) {
+String getLineOption(BuildContext context, List<RawData> rawData, List<List<Map<String, Object>>> markAreas, List<int> limits) {
   List<List<Object>> data = [];
   List<List<Object>> averageForce = [];
   data = convertRawdataToMap(rawData);
@@ -355,9 +354,9 @@ String getLineOption(BuildContext context, List<RawData> rawData, List<List<Map<
                   color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurface.value.toRadixString(16).substring(2)}')},
                   fontWeight: 300,
                   fontSize: 14,
-                  align: 'right',
+                  align: 'center',
                   verticalAlign: 'bottom',
-                  padding: [0, 8, 0, 0],
+                  padding: [0, 0, 0, 0],
                 },
               minInterval: 1,
               axisLine: {
@@ -401,22 +400,22 @@ String getLineOption(BuildContext context, List<RawData> rawData, List<List<Map<
               pieces: [
                 {
                   min: 0,
-                  max: 500,
+                  max: ${jsonEncode(limits[0])},
                   color: ${getColor(context, 'red')},
                   
                 },
                 {
-                  min: 500,
-                  max: 1500,
+                  min: ${jsonEncode(limits[0])},
+                  max: ${jsonEncode(limits[1])},
                   color: ${getColor(context, 'yellow')},
                 },
                 {
-                  min: 1500,
-                  max: 2500,
+                  min: ${jsonEncode(limits[1])},
+                  max: ${jsonEncode(limits[2])},
                   color: ${getColor(context, 'green')},
                 },
                 {
-                  min: 2500,
+                  min: ${jsonEncode(limits[2])},
                   color: ${getColor(context, 'orange')},
                 },
               ],
@@ -512,7 +511,7 @@ String getLineOption(BuildContext context, List<RawData> rawData, List<List<Map<
                 offset: [-14, -4],
                 color: ${jsonEncode('#${Theme.of(context).colorScheme.onSurface.value.toRadixString(16).substring(2)}')},
                 fontWeight: 300,
-                fontSize: 14,
+                fontSize: 16,
                 align: 'right',
                 verticalAlign: 'bottom',
               },
@@ -546,7 +545,7 @@ List<List<Object>> convertRawdataToMap(List<RawData> rawData) {
 List<List<Object>> getAverageForce(List<RawData> rawData) {
   List<List<Object>> averageData = [];
   var i = 0;
-  var totalForce = 0;
+  double totalForce = 0;
   double averageForce = 0;
   if (rawData.isNotEmpty) {
     for (RawData rawDataPoint in rawData) {
@@ -555,7 +554,7 @@ List<List<Object>> getAverageForce(List<RawData> rawData) {
         i++;
       }
     }
-    averageForce = (totalForce / i).roundToDouble();
+    averageForce = double.parse((totalForce / i).toStringAsFixed(4));
     averageData.add(['0', averageForce]);
     averageData.add([rawData.last.timestamp.toString(), averageForce]);
   }

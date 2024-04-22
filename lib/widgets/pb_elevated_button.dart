@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class PBElevatedButton extends StatelessWidget {
 
-  final void Function() onPressed;
+  final void Function()? onPressed;
   final Widget child;
 
   PBElevatedButton({required this.onPressed, required this.child});

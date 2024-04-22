@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'raw_data.dart';
 
@@ -18,7 +17,7 @@ class RawDataHandler extends ChangeNotifier {
     return _markAreas.length;
   }
 
-  void addData(int force, int time) {                          // function is triggered for every data point available
+  void addData(double force, int time) {                          // function is triggered for every data point available
     _rawData.add(RawData(force: force, timestamp: time));      // add data to the list
     bool start = true;
     bool first = true;

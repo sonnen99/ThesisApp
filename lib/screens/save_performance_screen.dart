@@ -47,8 +47,6 @@ class _SavePerformanceScreenState extends State<SavePerformanceScreen> {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -98,8 +96,10 @@ class _SavePerformanceScreenState extends State<SavePerformanceScreen> {
                     final DateTime now = DateTime.now();
                     final DateFormat formatter = DateFormat('yyyy-MM-dd hh:mm:ss');
                     final String date = formatter.format(now);
-                    _firestore.collection('athletes').doc(selectedAthlete).collection('performances').doc(date).set(Provider.of<RawDataHandler>(context, listen: false).convertForFirestore(date));
-                    Navigator.pop(context);
+                    _firestore.collection('athletes').doc(selectedAthlete).collection('performances').doc(date).set(Provider.of<RawDataHandler>(context, listen: false).convertForFirestore(date)).onError((error, stackTrace) {
+                      Navigator.pop(context, false);
+                    });
+                    Navigator.pop(context, true);
                   },
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.end,

@@ -9,8 +9,10 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:thesisapp/models/chart_handler.dart';
 import 'package:thesisapp/models/raw_data.dart';
 import 'package:thesisapp/screens/add_comment_screen.dart';
+import 'package:thesisapp/screens/change_limits_screen.dart';
 import 'package:thesisapp/utilities/firebase_tags.dart';
 import 'package:thesisapp/widgets/pb_delete_alert.dart';
+import 'package:thesisapp/widgets/pb_inversed_icon_button.dart';
 import '../utilities/constants.dart';
 import '../widgets/pb_icon_button.dart';
 
@@ -19,8 +21,9 @@ final _firestore = FirebaseFirestore.instance;
 class AthleteScreen extends StatefulWidget {
   final String athleteID;
   final String athleteName;
+  final List<int> athleteLimits;
 
-  const AthleteScreen({required this.athleteID, required this.athleteName});
+  const AthleteScreen({required this.athleteID, required this.athleteName, required this.athleteLimits});
 
   @override
   State<AthleteScreen> createState() => _AthleteScreenState();
@@ -30,6 +33,7 @@ class _AthleteScreenState extends State<AthleteScreen> {
   List<Map<String, dynamic>> performances = [];
   List<String> dates = [];
   List<String> comments = [];
+  late List<int> currentLimits = widget.athleteLimits;
   int selectedPerformance = 0;
   bool forwardDisabled = true;
   bool backwardDisabled = false;
@@ -51,40 +55,65 @@ class _AthleteScreenState extends State<AthleteScreen> {
             Navigator.pop(context);
           },
         ),
-        actions: [
-          MaterialButton(
-            elevation: 0,
-            shape: const CircleBorder(),
-            onPressed: () async {
-              final result = await showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                builder: (context) => SingleChildScrollView(
-                  child: Container(
-                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: AddCommentScreen(
-                      athleteID: widget.athleteID,
-                      date: dates[selectedPerformance],
-                      comment: comments[selectedPerformance],
-                    ),
-                  ),
-                ),
-              );
-              if (result != null) {
-                setState(() {
-                  comments[selectedPerformance] = result;
-                });
-              }
-            },
-            padding: const EdgeInsets.all(6.0),
-            color: Colors.transparent,
-            disabledColor: Theme.of(context).colorScheme.surfaceVariant,
-            disabledElevation: 0,
-            child: Icon(
-              Symbols.maps_ugc_rounded,
-              color: Theme.of(context).colorScheme.primary,
-              size: 32.0,
-            ),
+        actions: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              SizedBox(
+                width: 44.0,
+                child: PBInvertedIconButton(
+                    icon: Symbols.maps_ugc_rounded,
+                    onPressed: () async {
+                      final result = await showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (context) => SingleChildScrollView(
+                          child: Container(
+                            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                            child: AddCommentScreen(
+                              athleteID: widget.athleteID,
+                              date: dates[selectedPerformance],
+                              comment: comments[selectedPerformance],
+                            ),
+                          ),
+                        ),
+                      );
+                      if (result != null) {
+                        setState(() {
+                          comments[selectedPerformance] = result;
+                        });
+                      }
+                    },
+                    size: 36.0),
+              ),
+              SizedBox(
+                width: 50.0,
+                child: PBInvertedIconButton(
+                    icon: Symbols.settings_rounded,
+                    onPressed: () async {
+                      final result = await showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (context) => SingleChildScrollView(
+                          child: Container(
+                            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                            child: ChangeLimitsScreen(
+                              athleteID: widget.athleteID,
+                              athleteLimits: currentLimits,
+                            ),
+                          ),
+                        ),
+                      );
+                      if (result != null) {
+                        setState(() {
+                          currentLimits = result;
+                        });
+                      }
+                    },
+                    size: 36.0),
+              ),
+            ],
           ),
         ],
         title: Text(
@@ -105,8 +134,9 @@ class _AthleteScreenState extends State<AthleteScreen> {
                 comments.isNotEmpty && comments[selectedPerformance].isNotEmpty && comments[selectedPerformance] != ''
                     ? Expanded(
                         child: Text(
-                           'Note: ${comments[selectedPerformance]}',
+                          'Note: ${comments[selectedPerformance]}',
                           textAlign: TextAlign.start,
+                          style: kButtonTextStyle,
                         ),
                       )
                     : const SizedBox(
@@ -126,7 +156,12 @@ class _AthleteScreenState extends State<AthleteScreen> {
                                     final delete = <String, dynamic>{
                                       'comment': FieldValue.delete(),
                                     };
-                                    _firestore.collection(fbAthletes).doc(widget.athleteID).collection(fbPerformances).doc(dates[selectedPerformance]).update(delete);
+                                    _firestore
+                                        .collection(fbAthletes)
+                                        .doc(widget.athleteID)
+                                        .collection(fbPerformances)
+                                        .doc(dates[selectedPerformance])
+                                        .update(delete);
                                     setState(() {
                                       comments[selectedPerformance] = '';
                                     });
@@ -150,7 +185,9 @@ class _AthleteScreenState extends State<AthleteScreen> {
               ],
             ),
             getParameters(),
-            const SizedBox(height: 4.0,),
+            const SizedBox(
+              height: 4.0,
+            ),
             buildChart(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -168,7 +205,10 @@ class _AthleteScreenState extends State<AthleteScreen> {
                           },
                     size: 48.0),
                 dates.isNotEmpty
-                    ? Text(dates[selectedPerformance])
+                    ? Text(
+                        dates[selectedPerformance],
+                        style: kSurfaceTextStyle,
+                      )
                     : const SizedBox(
                         width: 1.0,
                       ),
@@ -293,7 +333,7 @@ class _AthleteScreenState extends State<AthleteScreen> {
     if (performances.isNotEmpty) {
       return Expanded(
         child: Echarts(
-          option: getLineOption(context, convertData(performances[selectedPerformance]), getMarkAreas(performances[selectedPerformance])),
+          option: getLineOption(context, convertData(performances[selectedPerformance]), getMarkAreas(performances[selectedPerformance]), currentLimits),
         ),
       );
     } else {
@@ -357,11 +397,19 @@ class _AthleteScreenState extends State<AthleteScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Time/stroke: $strokeTime sec'),
-        Text('Strokes/min: $strokeMin'),
-        Text('Above/under: $distribution'),
+        Text(
+          'Time/stroke: $strokeTime sec',
+          style: kSurfaceTextStyle,
+        ),
+        Text(
+          'Strokes/min: $strokeMin',
+          style: kSurfaceTextStyle,
+        ),
+        Text(
+          'Above/under: $distribution',
+          style: kSurfaceTextStyle,
+        ),
       ],
     );
   }
-
 }

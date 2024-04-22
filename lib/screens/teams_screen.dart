@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:thesisapp/models/athlete.dart';
@@ -9,8 +8,7 @@ import 'package:thesisapp/screens/add_athlete_screen.dart';
 import 'package:thesisapp/screens/athlete_screen.dart';
 import 'package:thesisapp/utilities/firebase_tags.dart';
 import 'package:thesisapp/widgets/pb_delete_alert.dart';
-import '../utilities/constants.dart';
-import '../widgets/ble_tile.dart';
+import 'package:thesisapp/widgets/pb_list_tile.dart';
 
 final _firestore = FirebaseFirestore.instance;
 
@@ -71,7 +69,13 @@ class AthleteStream extends StatelessWidget {
         if (snapshot.hasData) {
           List<Athlete> athleteList = [];
           for (var athlete in snapshot.data!.docs) {
-            athleteList.add(Athlete(firstName: athlete[fbFirstname], lastName: athlete[fbLastname], fbid: athlete.id));
+            athleteList.add(Athlete(
+                firstName: athlete[fbFirstname],
+                lastName: athlete[fbLastname],
+                fbid: athlete.id,
+                redArea: athlete[fbRedArea],
+                yellowArea: athlete[fbYellowArea],
+                greenArea: athlete[fbGreenArea]));
           }
           athleteList.sort((a, b) => a.firstName.compareTo(b.firstName));
           return Expanded(
@@ -109,19 +113,26 @@ class AthleteStream extends StatelessWidget {
                       ),
                     );
                   },
-                  child: BLETile(
+                  child: PBListTile(
                     bleTitle: '${athleteList[index].firstName} ${athleteList[index].lastName}',
                     onPress: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        print(athleteList[index].fbid);
-                        print(athleteList[index].firstName);
-                        return AthleteScreen(
-                          athleteID: athleteList[index].fbid,
-                          athleteName: '${athleteList[index].firstName} ${athleteList[index].lastName}',
-                        );
-                      }));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            List<int> limits = [];
+                            limits.add(athleteList[index].redArea);
+                            limits.add(athleteList[index].yellowArea);
+                            limits.add(athleteList[index].greenArea);
+                            return AthleteScreen(
+                              athleteID: athleteList[index].fbid,
+                              athleteName: '${athleteList[index].firstName} ${athleteList[index].lastName}',
+                              athleteLimits: limits,
+                            );
+                          },
+                        ),
+                      );
                     },
-                    isConnected: DeviceConnectionState.disconnecting,
                     leading: const Icon(
                       Symbols.person,
                       size: 24.0,

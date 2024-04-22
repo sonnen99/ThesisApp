@@ -1,6 +1,4 @@
-import 'dart:collection';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:provider/provider.dart';
@@ -67,7 +65,7 @@ class CommunicationHandler extends ChangeNotifier {
       List<String> timestamps = [];
       if (values.isNotEmpty) {
         timestamps = convertBytesToTimestamps(values);
-        convertTimestampsToData(timestamps);
+        convertRawDataToNewtons(timestamps);
       }
     }
   }
@@ -99,7 +97,7 @@ class CommunicationHandler extends ChangeNotifier {
     return timestamps;
   }
 
-  void convertTimestampsToData(List<String> timestamps) {                                             // triggered when data is available
+  void convertRawDataToNewtons(List<String> timestamps) {                                             // triggered when data is available
     List<RawData> rawData = [];
     for (String timestamp in timestamps) {                                                            // for every timestamp in the new data
       String force = '';
@@ -120,7 +118,8 @@ class CommunicationHandler extends ChangeNotifier {
             firstTimeStamp = int.parse(time);                                                         // record first timestamp for 0 adaption
             Provider.of<RawDataHandler>(context, listen: false).notFirst();
           }
-          rawData.add(RawData(force: int.parse(force), timestamp: int.parse(time) - firstTimeStamp)); // add force and time to list, next item
+          double dForce = double.parse((double.parse(force)).toStringAsFixed(4));                     //TODO might change constant 0.002826
+          rawData.add(RawData(force: dForce, timestamp: int.parse(time) - firstTimeStamp)); // add force and time to list, next item
           break;
         } else {
           currentNumber += timestampList[i];                                                          // add character to the current force or time

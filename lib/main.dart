@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:thesisapp/models/communication_handler.dart';
-import 'package:thesisapp/models/raw_data.dart';
 import 'package:thesisapp/models/raw_data_handler.dart';
 import 'package:thesisapp/screens/sensor_screen.dart';
-import 'package:thesisapp/screens/performance_screen.dart';
 import 'package:thesisapp/screens/bar_chart_screen.dart';
 import 'package:thesisapp/screens/settings_screen.dart';
 import 'package:thesisapp/screens/start_screen.dart';

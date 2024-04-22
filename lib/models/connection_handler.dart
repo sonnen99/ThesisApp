@@ -1,10 +1,6 @@
-import 'dart:collection';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'dart:async';
 import 'package:simple_logger/simple_logger.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'communication_handler.dart';
 
 class BLEConnection {
   SimpleLogger logger = SimpleLogger();

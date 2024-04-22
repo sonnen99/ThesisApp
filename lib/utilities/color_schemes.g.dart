@@ -169,3 +169,28 @@ String getLineColor(BuildContext context, String color) {
 
   return jsonEncode('#${returnColor.value.toRadixString(16).substring(2)}');
 }
+
+Color getLineColorAsColor(BuildContext context, String color) {
+  Color returnColor = const Color(0xFFFFFFFF);
+
+  switch (color) {
+
+    case 'green':
+      returnColor = const Color(0xFF85D98F);
+      break;
+    case 'yellow':
+      returnColor = const Color(0xFFFBDB0F);
+      break;
+    case 'orange':
+      returnColor = const Color(0xFFFC7D02);
+      break;
+    case 'red':
+      returnColor = const Color(0xFFFD0100);
+      break;
+    default:
+      returnColor = const Color(0xFFFFFFFF);
+      break;
+  }
+
+  return returnColor;
+}

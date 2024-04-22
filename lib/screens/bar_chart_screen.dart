@@ -5,6 +5,8 @@ import '../models/chart_handler.dart';
 class BarChartScreen extends StatefulWidget {
   static const String id = 'bar_chart_screen';
 
+  const BarChartScreen({super.key});
+
   @override
   State<BarChartScreen> createState() => _BarChartScreenState();
 }

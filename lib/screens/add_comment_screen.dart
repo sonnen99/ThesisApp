@@ -14,7 +14,7 @@ class AddCommentScreen extends StatefulWidget {
   final String date;
   final String comment;
 
-  const AddCommentScreen({required this.athleteID, required this.date, required this.comment});
+  const AddCommentScreen({super.key, required this.athleteID, required this.date, required this.comment});
 
   @override
   State<AddCommentScreen> createState() => _AddCommentScreenState();

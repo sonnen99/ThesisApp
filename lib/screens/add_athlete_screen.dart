@@ -1,14 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:provider/provider.dart';
-import 'package:thesisapp/models/raw_data_handler.dart';
-import 'package:thesisapp/models/raw_data.dart';
 import 'package:thesisapp/utilities/firebase_tags.dart';
 import '../utilities/constants.dart';
 import '../widgets/pb_elevated_button.dart';
 import '../widgets/pb_text_field.dart';
-import 'package:intl/intl.dart';
 
 final _firestore = FirebaseFirestore.instance;
 
@@ -104,6 +100,9 @@ class _AddAthleteScreenState extends State<AddAthleteScreen> {
                       final athlete = <String, dynamic> {
                         fbFirstname: firstName.trim(),
                         fbLastname : lastName.trim(),
+                        fbRedArea: 500,
+                        fbYellowArea: 1500,
+                        fbGreenArea: 2500,
                       };
                       _firestore.collection(fbAthletes).add(athlete);
                       Navigator.pop(context);

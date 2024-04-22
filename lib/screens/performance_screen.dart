@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -12,6 +10,7 @@ import 'package:thesisapp/models/raw_data_list.dart';
 import 'package:thesisapp/screens/save_performance_screen.dart';
 import 'package:thesisapp/widgets/ble_tile.dart';
 import 'package:thesisapp/widgets/pb_elevated_button.dart';
+import 'package:thesisapp/widgets/pb_inversed_icon_button.dart';
 
 import '../models/athlete.dart';
 import '../utilities/constants.dart';
@@ -23,7 +22,7 @@ final _firestore = FirebaseFirestore.instance;
 class PerformanceScreen extends StatefulWidget {
   static const String id = 'performance_screen';
 
-  PerformanceScreen({required this.device});
+  const PerformanceScreen({super.key, required this.device});
 
   final device;
 
@@ -74,7 +73,6 @@ class _PerformanceScreenState extends State<PerformanceScreen> {
                       Symbols.bluetooth_connected_rounded,
                     )
                   : SpinKitWaveSpinner(
-                      //dual ring, , , ripple, spinning lines, wave spinner
                       trackColor: Theme.of(context).colorScheme.secondaryContainer,
                       waveColor: Theme.of(context).colorScheme.primary,
                       curve: Curves.fastOutSlowIn,
@@ -87,7 +85,6 @@ class _PerformanceScreenState extends State<PerformanceScreen> {
                       ),
                     ),
             ),
-
             RawDataList(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -113,29 +110,67 @@ class _PerformanceScreenState extends State<PerformanceScreen> {
                     ],
                   ),
                 ),
+                PBInvertedIconButton(
+                    icon: Symbols.home_rounded,
+                    onPressed: () {
+                      Provider.of<RawDataHandler>(context, listen: false).deleteAll();
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                    },
+                    size: 36.0),
                 PBElevatedButton(
-                  onPressed: () async {
-                    List<Athlete> athleteList = [];
-                    await _firestore.collection(fbAthletes).get().then((querySnapshot) {
-                      if (querySnapshot.docs.isNotEmpty) {
-                        for (var snapshot in querySnapshot.docs) {
-                          athleteList.add(Athlete(firstName: snapshot.data()[fbFirstname], lastName: snapshot.data()[fbLastname], fbid: snapshot.id));
+                  onPressed: Provider.of<RawDataHandler>(context, listen: true).dataCount != 0
+                      ? () async {
+                          List<Athlete> athleteList = [];
+                          await _firestore.collection(fbAthletes).get().then((querySnapshot) {
+                            if (querySnapshot.docs.isNotEmpty) {
+                              for (var snapshot in querySnapshot.docs) {
+                                athleteList.add(Athlete(
+                                    firstName: snapshot.data()[fbFirstname],
+                                    lastName: snapshot.data()[fbLastname],
+                                    fbid: snapshot.id,
+                                    redArea: snapshot.data()[fbRedArea],
+                                    yellowArea: snapshot.data()[fbYellowArea],
+                                    greenArea: snapshot.data()[fbGreenArea]));
+                              }
+                              athleteList.sort((a, b) => a.firstName.compareTo(b.firstName));
+                            }
+                          });
+                          final result = await showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (context) => SingleChildScrollView(
+                              child: Container(
+                                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                child: SavePerformanceScreen(
+                                  athletes: athleteList,
+                                ),
+                              ),
+                            ),
+                          );
+                          if (result != null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  result ? 'Performance saved' : 'Performance could not be saved',
+                                  style: kButtonTextStyle.copyWith(
+                                    color: result ? Theme.of(context).colorScheme.onTertiary : Theme.of(context).colorScheme.onError,
+                                  ),
+                                ),
+                                duration: const Duration(seconds: 2),
+                                backgroundColor: result ? Theme.of(context).colorScheme.tertiary : Theme.of(context).colorScheme.error,
+                                elevation: 5.0,
+                                showCloseIcon: true,
+                                closeIconColor: result ? Theme.of(context).colorScheme.onTertiary : Theme.of(context).colorScheme.onError,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                behavior: SnackBarBehavior.floating,
+                                margin: const EdgeInsets.all(20.0),
+                              ),
+                            );
+                          }
                         }
-                      }
-                    });
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      builder: (context) => SingleChildScrollView(
-                        child: Container(
-                          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                          child: SavePerformanceScreen(
-                            athletes: athleteList,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
+                      : null,
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     mainAxisSize: MainAxisSize.min,
@@ -172,8 +207,4 @@ class _PerformanceScreenState extends State<PerformanceScreen> {
       });
     });
   }
-
-// Stream<int> dataStream() {
-//   return Stream.
-// }
 }

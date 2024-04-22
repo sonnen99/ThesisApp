@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Parameter {
   Parameter(this.name, this.maxmin, this.max, this.min);
 

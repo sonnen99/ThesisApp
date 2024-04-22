@@ -1,24 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:thesisapp/utilities/firebase_tags.dart';
 
 class Athlete {
   final String firstName;
   final String lastName;
   final String fbid;
+  final int redArea;
+  final int yellowArea;
+  final int greenArea;
 
-  Athlete({required this.firstName, required this.lastName, required this.fbid});
+  Athlete({required this.firstName, required this.lastName, required this.fbid, required this.redArea, required this.yellowArea, required this.greenArea});
 
   factory Athlete.fromFirestore(
       DocumentSnapshot<Map<String, dynamic>> snapshot, SnapshotOptions? options,) {
       final data = snapshot.data();
-      return Athlete(firstName: data?['firstname'], lastName: data?['lastname'], fbid: snapshot.id);
+      return Athlete(firstName: data?[fbFirstname], lastName: data?[fbLastname], fbid: snapshot.id, redArea:  data?[fbRedArea], yellowArea: data?[fbYellowArea], greenArea: data?[fbGreenArea]);
   }
 
   Map<String, dynamic> toFirestore() {
     return {
-      'firstname': firstName,
-      'lastname' : lastName,
+      fbFirstname: firstName,
+      fbLastname : lastName,
+      fbRedArea : redArea,
+      fbYellowArea : yellowArea,
+      fbGreenArea : greenArea,
     };
   }
 
