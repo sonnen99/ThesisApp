@@ -38,7 +38,6 @@ class _TeamsScreenState extends State<TeamsScreen> {
               ),
             );
           },
-          heroTag: 'performance',
           shape: const CircleBorder(),
           child: const Icon(
             Symbols.add_rounded,
@@ -49,9 +48,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: const Column(
         children: [
-          Expanded(
-            child: AthleteStream(),
-          ),
+          AthleteStream(),
         ],
       ),
     );

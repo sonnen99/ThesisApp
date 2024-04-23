@@ -43,7 +43,7 @@ class _StartScreenState extends State<StartScreen> {
           appBar: AppBar(
             title: Text(
               screenList[currentIndex],
-              style: kTitleStyle,
+              style: kScreenTitleStyle,
             ),
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

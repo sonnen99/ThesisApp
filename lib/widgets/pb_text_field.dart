@@ -14,7 +14,7 @@ class PBTextField extends StatelessWidget {
 
       return TextField(
         autofocus: true,
-        style: kTitleStyle,
+        style: kScreenTitleStyle,
         cursorColor: Theme.of(context).colorScheme.onSecondaryContainer,
         controller: textEditingController,
         keyboardAppearance: Theme.of(context).brightness,

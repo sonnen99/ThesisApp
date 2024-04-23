@@ -43,7 +43,7 @@ class _SensorScreenState extends State<SensorScreen> {
           ),
           title: const Text(
             'Performance collection',
-            style: kTitleStyle,
+            style: kScreenTitleStyle,
           ),
         ),
         body: Padding(

@@ -1,12 +1,20 @@
 import 'dart:collection';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'raw_data.dart';
 
 class RawDataHandler extends ChangeNotifier {
   List<RawData> _rawData = [];
   List<List<Map<String, Object>>> _markAreas = [];
   bool _lastTimestamp = true;
+  ThemeMode _mode;
+  ThemeMode get mode => _mode;
+  RawDataHandler({ThemeMode mode = ThemeMode.dark}) : _mode = mode;
 
+  void toggleMode() {
+    _mode = _mode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    notifyListeners();
+  }
 
 
   int get dataCount {

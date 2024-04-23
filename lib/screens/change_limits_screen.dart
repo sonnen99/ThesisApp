@@ -70,7 +70,7 @@ class _ChangeLimitsScreenState extends State<ChangeLimitsScreen> {
               step: 50,
               maxValue: 4000,
               selectedTextStyle: kSurfaceTextStyle.copyWith(color: Theme.of(context).colorScheme.onSecondaryContainer),
-              textStyle: kTitleStyle,
+              textStyle: kScreenTitleStyle,
               value: _currentRedValue,
               onChanged: (value) {
                 setState(() {
@@ -101,7 +101,7 @@ class _ChangeLimitsScreenState extends State<ChangeLimitsScreen> {
               step: 50,
               maxValue: 4000,
               selectedTextStyle: kSurfaceTextStyle.copyWith(color: Theme.of(context).colorScheme.onSecondaryContainer),
-              textStyle: kTitleStyle,
+              textStyle: kScreenTitleStyle,
               value: _currentYellowValue,
               onChanged: (value) {
                 setState(() {
@@ -132,7 +132,7 @@ class _ChangeLimitsScreenState extends State<ChangeLimitsScreen> {
               step: 50,
               maxValue: 4000,
               selectedTextStyle: kSurfaceTextStyle.copyWith(color: Theme.of(context).colorScheme.onSecondaryContainer),
-              textStyle: kTitleStyle,
+              textStyle: kScreenTitleStyle,
               value: _currentGreenValue,
               onChanged: (value) {
                 setState(() {

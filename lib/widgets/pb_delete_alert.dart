@@ -31,7 +31,7 @@ class PBDeleteAlert extends StatelessWidget {
             ),
             Text(
               title,
-              style: kTitleStyle.copyWith(color: Theme.of(context).colorScheme.onErrorContainer),
+              style: kScreenTitleStyle.copyWith(color: Theme.of(context).colorScheme.onErrorContainer),
             ),
           ],
         ),

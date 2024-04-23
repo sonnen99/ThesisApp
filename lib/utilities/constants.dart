@@ -31,10 +31,21 @@ final screenList = <String>[
   'Profile',
 ];
 
-const kTitleStyle = TextStyle(fontWeight: FontWeight.w100);
+final languageList = <String> [
+  'English',
+  'Swedish',
+];
+
+const kScreenTitleStyle = TextStyle(fontWeight: FontWeight.w100, fontSize: 24.0);
 
 const kButtonTextStyle = TextStyle(fontWeight: FontWeight.w100, fontSize: 18.0,);
 
 const kSurfaceTextStyle = TextStyle(fontWeight: FontWeight.w400, fontSize: 18.0);
 
 const kErrorTextStyle = TextStyle(fontWeight: FontWeight.w100, fontSize: 20.0);
+
+const kHeadline1TextStyle = TextStyle(fontWeight: FontWeight.w400,fontSize: 32.0);
+
+const kHeadline2TextStyle = TextStyle(fontWeight: FontWeight.w100,fontSize: 24.0);
+
+const kSubHeadlineTextStyle = TextStyle(fontWeight: FontWeight.w100, fontSize: 18.0);

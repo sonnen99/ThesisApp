@@ -90,7 +90,7 @@ class _AthleteScreenState extends State<AthleteScreen> {
               SizedBox(
                 width: 50.0,
                 child: PBInvertedIconButton(
-                    icon: Symbols.settings_rounded,
+                    icon: Symbols.tune_rounded,
                     onPressed: () async {
                       final result = await showModalBottomSheet(
                         context: context,
@@ -118,7 +118,7 @@ class _AthleteScreenState extends State<AthleteScreen> {
         ],
         title: Text(
           widget.athleteName,
-          style: kTitleStyle,
+          style: kScreenTitleStyle,
         ),
       ),
       body: Padding(

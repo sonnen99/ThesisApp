@@ -29,20 +29,22 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => RawDataHandler(),
-      child: MaterialApp(
-        theme: MyTheme.lightThemeData(context),
-        darkTheme: MyTheme.darkThemeData(),
-        themeMode: ThemeMode.dark,
-        initialRoute: StartScreen.id,
-        routes: {
-          StartScreen.id: (context) => StartScreen(),
-          HomeScreen.id: (context) => HomeScreen(),
-          TeamsScreen.id: (context) => TeamsScreen(),
-          SettingsScreen.id: (context) => SettingsScreen(),
-          BarChartScreen.id: (context) => BarChartScreen(),
-          SensorScreen.id: (context) => SensorScreen(),
-        },
-      ),
+      child: Consumer<RawDataHandler>(builder: (_, model, __) {
+        return MaterialApp(
+          theme: MyTheme.lightThemeData(context),
+          darkTheme: MyTheme.darkThemeData(),
+          themeMode: model.mode,
+          initialRoute: StartScreen.id,
+          routes: {
+            StartScreen.id: (context) => StartScreen(),
+            HomeScreen.id: (context) => HomeScreen(),
+            TeamsScreen.id: (context) => TeamsScreen(),
+            SettingsScreen.id: (context) => SettingsScreen(),
+            BarChartScreen.id: (context) => BarChartScreen(),
+            SensorScreen.id: (context) => SensorScreen(),
+          },
+        );
+      }),
     );
   }
 }

@@ -55,7 +55,7 @@ class _PerformanceScreenState extends State<PerformanceScreen> {
         ),
         title: const Text(
           'Performance collection',
-          style: kTitleStyle,
+          style: kScreenTitleStyle,
         ),
       ),
       body: Padding(
