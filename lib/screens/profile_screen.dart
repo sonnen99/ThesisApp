@@ -4,8 +4,6 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:thesisapp/utilities/constants.dart';
-import 'package:thesisapp/widgets/pb_elevated_button.dart';
-import 'package:thesisapp/widgets/pb_inversed_icon_button.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const String id = 'settings_screen';

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:thesisapp/main.dart';
 import 'package:thesisapp/models/raw_data_handler.dart';
 import 'package:thesisapp/utilities/constants.dart';
 import 'package:thesisapp/widgets/pb_switch.dart';

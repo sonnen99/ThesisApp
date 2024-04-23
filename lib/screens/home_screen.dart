@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:thesisapp/utilities/constants.dart';
-import 'package:thesisapp/widgets/pb_list_tile.dart';
 import 'package:thesisapp/widgets/pb_training_list_tile.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -70,7 +69,7 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
                 onPress: () {},
-                leading: Icon(Symbols.pool_rounded))
+                leading: const Icon(Symbols.pool_rounded))
           ],
         ),
       ),
