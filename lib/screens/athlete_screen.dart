@@ -148,26 +148,27 @@ class _AthleteScreenState extends State<AthleteScreen> {
                         shape: const CircleBorder(),
                         onPressed: () {
                           showDialog(
-                              context: context,
-                              barrierDismissible: true,
-                              builder: (_) => PBDeleteAlert(
-                                  title: 'Delete comment?',
-                                  onYes: () {
-                                    final delete = <String, dynamic>{
-                                      'comment': FieldValue.delete(),
-                                    };
-                                    _firestore
-                                        .collection(fbAthletes)
-                                        .doc(widget.athleteID)
-                                        .collection(fbPerformances)
-                                        .doc(dates[selectedPerformance])
-                                        .update(delete);
-                                    setState(() {
-                                      comments[selectedPerformance] = '';
-                                    });
-                                    Navigator.pop(context);
-                                  },
-                                  content: comments[selectedPerformance]));
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (_) => PBDeleteAlert(
+                                title: 'Delete comment?',
+                                onYes: () {
+                                  final delete = <String, dynamic>{
+                                    'comment': FieldValue.delete(),
+                                  };
+                                  _firestore
+                                      .collection(fbAthletes)
+                                      .doc(widget.athleteID)
+                                      .collection(fbPerformances)
+                                      .doc(dates[selectedPerformance])
+                                      .update(delete);
+                                  setState(() {
+                                    comments[selectedPerformance] = '';
+                                  });
+                                  Navigator.pop(context);
+                                },
+                                content: comments[selectedPerformance]),
+                          );
                         },
                         padding: const EdgeInsets.all(6.0),
                         color: Colors.transparent,

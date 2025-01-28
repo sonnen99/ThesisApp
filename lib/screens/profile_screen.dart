@@ -6,7 +6,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:thesisapp/utilities/constants.dart';
 
 class ProfileScreen extends StatelessWidget {
-  static const String id = 'settings_screen';
+  static const String id = 'profile_screen';
 
   @override
   Widget build(BuildContext context) {

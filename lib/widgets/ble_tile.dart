@@ -17,7 +17,7 @@ class BLETile extends StatelessWidget {
         title: Row(
           children: [
             Text(
-              bleTitle.substring(0, 10),
+              bleTitle.length > 9 ? bleTitle.substring(0, 10) : bleTitle,
               style: TextStyle(
                 fontWeight: FontWeight.w300,
                 fontSize: 20.0,

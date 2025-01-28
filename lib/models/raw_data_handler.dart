@@ -31,6 +31,7 @@ class RawDataHandler extends ChangeNotifier {
     bool first = true;
     int startValue = 0;
     int endValue = 0;
+    String hello = 'Hello';
     _markAreas.clear();
     for (var rawData in _rawData) {
       if (rawData.force == 0 && start) {
